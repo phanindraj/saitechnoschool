@@ -189,12 +189,11 @@
     studentForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      // UI state updates
+      // Update button state
       submitBtn.disabled = true;
       submitBtn.querySelector('span').innerText = 'Saving to Database...';
       if (errorAlert) errorAlert.style.display = 'none';
 
-      // Convert form values to JSON payload
       const formData = new FormData(studentForm);
       const payload = Object.fromEntries(formData.entries());
 
@@ -207,10 +206,18 @@
           body: JSON.stringify(payload)
         });
 
+        // SAFEGUARD: Verify server returned JSON before trying to parse
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const rawText = await response.text();
+          console.error('Server returned non-JSON response:', rawText);
+          throw new Error(`Server error (${response.status} ${response.statusText}): Received HTML/text instead of JSON. Check backend server logs.`);
+        }
+
         const result = await response.json();
 
         if (response.ok && result.success) {
-          // Success: redirect to student directory list
+          // Success: redirect to student directory
           window.location.href = 'students.html';
         } else {
           throw new Error(result.error || 'Failed to save student record.');
@@ -218,11 +225,11 @@
       } catch (err) {
         console.error('Submission error:', err);
         if (errorAlert) {
-          errorAlert.innerText = err.message || 'Error saving student to MongoDB. Please check server logs.';
+          errorAlert.innerText = err.message || 'Error saving student to MongoDB. Please check server connection.';
           errorAlert.style.display = 'block';
         }
 
-        // Reset submit button state
+        // Reset submit button state on failure
         submitBtn.disabled = false;
         submitBtn.querySelector('span').innerText = 'Save to Saitechnoschool DB';
       }
