@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-// Define Student Schema & Model
+// Define Schema for Student records
 const studentSchema = new mongoose.Schema({
   rollNo: { type: String, required: true },
   name: { type: String, required: true },
@@ -15,41 +15,42 @@ const studentSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+// Bind to 'students' collection inside 'Saitechnoschool' DB
 const Student = mongoose.model('Student', studentSchema);
 
-// GET /api/students - Fetch all student records from MongoDB Atlas
-router.get('/students', async (req, res) => {
-  try {
-    const students = await Student.find().sort({ createdAt: -1 });
-    res.status(200).json(students);
-  } catch (error) {
-    console.error('Error fetching students:', error);
-    res.status(500).json({ error: 'Failed to fetch student records.' });
-  }
-});
-
-// POST /api/add-student - Save new student to MongoDB Atlas
+// POST /api/add-student — Save student data
 router.post('/add-student', async (req, res) => {
   try {
+    const { rollNo, name, dob, classSec, guardian, contact, grade } = req.body;
+
+    // Node.js Mongoose Instance creation
     const newStudent = new Student({
-      rollNo: req.body.rollNo,
-      name: req.body.name,
-      dob: req.body.dob,
-      classSec: req.body.classSec,
-      guardian: req.body.guardian,
-      contact: req.body.contact,
-      grade: req.body.grade || 'Grade A',
-      gradeClass: req.body.grade === 'Grade A+' ? 'excellent' : 'good'
+      rollNo,
+      name,
+      dob,
+      classSec,
+      guardian,
+      contact,
+      grade: grade || 'Grade A',
+      gradeClass: grade === 'Grade A+' ? 'excellent' : 'good'
     });
 
-    await newStudent.save();
-    console.log(`Saved student ${newStudent.name} to Saitechnoschool database.`);
-    
-    // Send JSON response for AJAX fetch requests
-    res.status(201).json({ success: true, message: 'Student saved successfully.' });
+    // Save document to MongoDB Atlas
+    const savedStudent = await newStudent.save();
+    console.log('Saved to MongoDB Atlas:', savedStudent.name);
+
+    // Return success response to frontend
+    res.status(201).json({
+      success: true,
+      message: 'Student record saved successfully!',
+      student: savedStudent
+    });
   } catch (error) {
-    console.error('Error saving student:', error);
-    res.status(500).json({ error: 'Failed to save student record to MongoDB Atlas.' });
+    console.error('Database save error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to save student data to MongoDB Atlas.'
+    });
   }
 });
 
