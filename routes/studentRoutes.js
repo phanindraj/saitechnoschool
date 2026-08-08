@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-// Define Schema matching the form fields in add-student.html
+// Define or reuse existing Student Model
 const studentSchema = new mongoose.Schema({
   rollNo: { type: String, required: true },
   name: { type: String, required: true },
@@ -15,39 +15,32 @@ const studentSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Create model bound to 'students' collection in 'Saitechnoschool' DB
-const Student = mongoose.model('Student', studentSchema);
+const Student = mongoose.models.Student || mongoose.model('Student', studentSchema);
 
-// --------------------------------------------------
-// GET /api/students — Fetch all student records
-// --------------------------------------------------
+// GET /api/students - Fetch all students
 router.get('/students', async (req, res) => {
   try {
     const students = await Student.find().sort({ createdAt: -1 });
     return res.status(200).json(students);
   } catch (error) {
     console.error('Error fetching students:', error);
-    return res.status(500).json({
-      success: false,
-      error: 'Failed to fetch student records from database.'
-    });
+    return res.status(500).json({ success: false, error: 'Failed to retrieve students from database.' });
   }
 });
 
-// --------------------------------------------------
-// POST /api/add-student — Save new student entry
-// --------------------------------------------------
+// POST /api/add-student - Register new student
 router.post('/add-student', async (req, res) => {
   try {
     const { rollNo, name, dob, classSec, guardian, contact, grade } = req.body;
 
-    // Validate required fields explicitly
     if (!rollNo || !name || !dob || !classSec || !guardian || !contact) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required form fields. Please fill out all required inputs.'
+        error: 'All required fields must be provided.'
       });
     }
+
+    const gradeClassValue = grade === 'Grade A+' ? 'excellent' : 'good';
 
     const newStudent = new Student({
       rollNo,
@@ -57,26 +50,22 @@ router.post('/add-student', async (req, res) => {
       guardian,
       contact,
       grade: grade || 'Grade A',
-      gradeClass: grade === 'Grade A+' ? 'excellent' : 'good'
+      gradeClass: gradeClassValue
     });
 
     const savedStudent = await newStudent.save();
-    console.log(`Successfully saved student: ${savedStudent.name}`);
+    console.log(`Successfully created student: ${savedStudent.name}`);
 
-    // ALWAYS return explicit JSON with HTTP 201 Created
     return res.status(201).json({
       success: true,
-      message: 'Student record saved successfully!',
+      message: 'Student record successfully saved!',
       student: savedStudent
     });
-
   } catch (error) {
-    console.error('Error saving student to MongoDB:', error);
-    
-    // ALWAYS return explicit JSON on failure (prevents HTML error pages)
+    console.error('Error saving student:', error);
     return res.status(500).json({
       success: false,
-      error: error.message || 'Server error while saving student to MongoDB Atlas.'
+      error: error.message || 'Internal server error while saving record.'
     });
   }
 });
