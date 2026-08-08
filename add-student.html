@@ -6,7 +6,7 @@
   <title>Add Student - Sai Techno School</title>
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="js/script"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -27,40 +27,41 @@
 
   <section class="directory-hero">
     <h1>Student Entry Form</h1>
-    <p>Enter student details below to save them directly into <strong>student/student.txt</strong>.</p>
+    <p>Enter student details below to save them directly to the server in <strong>student/student.txt</strong>.</p>
   </section>
 
   <section class="directory-section">
     <div style="max-width: 650px; margin: 0 auto;">
-      <form class="contact-form" id="studentForm">
+      <!-- Form posts directly to the Express server route -->
+      <form class="contact-form" action="/api/add-student" method="POST">
         <h3>New Student Registration</h3>
 
         <div class="input-group">
-          <input type="text" id="rollNo" placeholder="Roll Number (e.g., STS-2026-05)" required />
+          <input type="text" name="rollNo" placeholder="Roll Number (e.g., STS-2026-05)" required />
         </div>
 
         <div class="input-group">
-          <input type="text" id="name" placeholder="Student Full Name" required />
+          <input type="text" name="name" placeholder="Student Full Name" required />
         </div>
 
         <div class="input-group">
-          <input type="text" id="dob" placeholder="Date of Birth (DD/MM/YYYY)" required />
+          <input type="text" name="dob" placeholder="Date of Birth (DD/MM/YYYY)" required />
         </div>
 
         <div class="input-group">
-          <input type="text" id="classSec" placeholder="Class & Section (e.g., Class 8 - A)" required />
+          <input type="text" name="classSec" placeholder="Class & Section (e.g., Class 8 - A)" required />
         </div>
 
         <div class="input-group">
-          <input type="text" id="guardian" placeholder="Parent / Guardian Name" required />
+          <input type="text" name="guardian" placeholder="Parent / Guardian Name" required />
         </div>
 
         <div class="input-group">
-          <input type="tel" id="contact" placeholder="Contact Mobile Number" required />
+          <input type="tel" name="contact" placeholder="Contact Mobile Number" required />
         </div>
 
         <div class="input-group">
-          <select id="grade" class="styled-select" required>
+          <select name="grade" class="styled-select" required>
             <option value="" disabled selected>Select Performance Grade</option>
             <option value="Grade A+">Grade A+</option>
             <option value="Grade A">Grade A</option>
@@ -68,7 +69,7 @@
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Save to student/student.txt <i data-lucide="save"></i></button>
+        <button type="submit" class="submit-btn">Save Student Details <i data-lucide="user-plus"></i></button>
       </form>
     </div>
   </section>
@@ -79,58 +80,6 @@
 
   <script>
     lucide.createIcons();
-
-    document.getElementById('studentForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const newStudent = {
-        rollNo: document.getElementById('rollNo').value,
-        name: document.getElementById('name').value,
-        dob: document.getElementById('dob').value,
-        classSec: document.getElementById('classSec').value,
-        guardian: document.getElementById('guardian').value,
-        contact: document.getElementById('contact').value,
-        grade: document.getElementById('grade').value,
-        gradeClass: document.getElementById('grade').value === 'Grade A+' ? 'excellent' : 'good'
-      };
-
-      // 1. Get existing records from LocalStorage
-      const existingStudents = JSON.parse(localStorage.getItem('students')) || [];
-      existingStudents.push(newStudent);
-
-      // Save to browser cache so students.html displays immediately
-      localStorage.setItem('students', JSON.stringify(existingStudents));
-
-      // 2. Save file directly to project folder: student/student.txt
-      try {
-        if ('showDirectoryPicker' in window) {
-          alert("Select your project root folder ('sai-techno-school') to allow saving to student/student.txt.");
-
-          // Prompt user to pick the project folder
-          const rootHandle = await window.showDirectoryPicker();
-
-          // Get or create the 'student' subfolder
-          const studentFolderHandle = await rootHandle.getDirectoryHandle('student', { create: true });
-
-          // Get or create 'student.txt' file inside 'student' folder
-          const fileHandle = await studentFolderHandle.getFileHandle('student.txt', { create: true });
-
-          // Write updated JSON data into the text file
-          const writable = await fileHandle.createWritable();
-          await writable.write(JSON.stringify(existingStudents, null, 2));
-          await writable.close();
-
-          alert("Successfully saved to student/student.txt!");
-        } else {
-          alert("Browser directory picker not supported. Data saved to browser storage only.");
-        }
-      } catch (err) {
-        console.warn("Folder access cancelled or denied:", err);
-      }
-
-      // Redirect to directory page
-      window.location.href = 'students.html';
-    });
   </script>
 </body>
 </html>
