@@ -12,30 +12,38 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* Inline fix to align labels and inputs horizontally as requested */
+    /* Table layout styling to keep label and input completely on one single line */
     .form-grid {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .form-row {
+      display: flex;
       align-items: center;
+      gap: 15px;
     }
-    .form-group-full {
-      grid-column: span 2;
-    }
-    .form-group {
-      display: contents; /* Allows label and input to act directly as grid items */
-    }
-    .form-group label {
+    .form-row label {
+      width: 170px;
+      flex-shrink: 0;
       margin-bottom: 0;
       text-align: right;
+      font-weight: 600;
+      white-space: nowrap;
     }
-    @media (max-width: 600px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      .form-group label {
-        text-align: left;
-      }
+    .form-row input,
+    .form-row select {
+      flex-grow: 1;
+      width: 100%;
+    }
+    .form-row-full {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .form-row-full label {
+      text-align: left;
+      width: 100%;
+      margin-bottom: 6px;
     }
   </style>
 </head>
@@ -99,54 +107,59 @@
         <form id="addStudentForm">
           <div class="form-grid">
             
-            <div class="form-group form-group-full" style="display: block; margin-bottom: 8px;">
-              <label for="name" style="text-align: left; margin-bottom: 6px;">Full Name</label>
-              <input type="text" id="name" name="name" required placeholder="e.g. RISHIT KARTHIKEYA" />
+            <div class="form-row form-row-full">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required placeholder="e.g. FIRSTNAME LASTNAME" />
             </div>
 
-            <div class="form-group">
+            <div class="form-row">
               <label for="rollNo">Roll Number</label>
               <input type="text" id="rollNo" name="rollNo" required placeholder="e.g. STS-2026-01" />
             </div>
 
-            <div class="form-group">
+            <div class="form-row">
               <label for="dob">Date of Birth</label>
               <input type="date" id="dob" name="dob" required />
             </div>
 
-            <div class="form-group">
+            <div class="form-row">
               <label for="classSec">Class & Section</label>
               <input type="text" id="classSec" name="classSec" required placeholder="e.g. Class 3 - Section A" />
             </div>
 
-            <div class="form-group">
+            <div class="form-row">
               <label for="guardian">Guardian Name</label>
-              <input type="text" id="guardian" name="guardian" required placeholder="e.g. PHANINDRA" />
+              <input type="text" id="guardian" name="guardian" required placeholder="e.g. GUARDIAN NAME" />
             </div>
 
-            <div class="form-group">
+            <div class="form-row">
               <label for="contact">Contact Number</label>
-              <input type="text" id="contact" name="contact" required placeholder="e.g. 9030550770" />
+              <input type="text" id="contact" name="contact" required placeholder="e.g. 987654321" />
             </div>
 
-            <div class="form-group">
+            <div class="form-row">
               <label for="grade">Grade / Performance</label>
-              <input type="text" id="grade" name="grade" placeholder="e.g. Grade A" />
+              <select id="grade" name="grade" class="styled-select" required>
+                <option value="" disabled selected>Select Performance Grade</option>
+                <option value="Grade A+">Grade A+</option>
+                <option value="Grade A">Grade A</option>
+                <option value="Grade B">Grade B</option>
+              </select>
             </div>
 
-            <div class="form-group form-group-full" style="display: block; margin-top: 8px;">
-              <label for="gradeClass" style="text-align: left; margin-bottom: 6px;">Remarks / Additional Notes</label>
+            <div class="form-row form-row-full">
+              <label for="gradeClass">Remarks / Additional Notes</label>
               <input type="text" id="gradeClass" name="gradeClass" placeholder="e.g. Excellent academic performance" />
             </div>
 
           </div>
 
-          <button type="submit" id="submitBtn" class="btn-submit">
+          <button type="submit" id="submitBtn" class="btn-submit" style="margin-top: 20px;">
             <i data-lucide="save" size="18"></i> Save Student Record
           </button>
         </form>
 
-        <a href="students.html" class="nav-link">&larr; Return to Students Directory</a>
+        <a href="students.html" class="nav-link" style="display: block; margin-top: 15px; text-align: center;">&larr; Return to Students Directory</a>
       </div>
 
     </div>
