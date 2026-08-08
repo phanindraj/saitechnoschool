@@ -7,6 +7,92 @@
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .form-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: #ffffff;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    .form-header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .form-header h2 {
+      font-size: 1.8rem;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+    .form-header p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #334155;
+      font-size: 0.9rem;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s ease;
+    }
+    .submit-btn:hover {
+      background-color: #1d4ed8;
+    }
+    .submit-btn:disabled {
+      background-color: #94a3b8;
+      cursor: not-allowed;
+    }
+    .alert-msg {
+      display: none;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .alert-error {
+      background-color: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+  </style>
 </head>
 <body>
 
@@ -26,50 +112,66 @@
   </nav>
 
   <section class="directory-hero">
-    <h1>Student Entry Form</h1>
-    <p>Enter student details below to save them directly to the server in <strong>student/student.txt</strong>.</p>
+    <h1>Register New Student</h1>
+    <p>Fill out the form below to save data into the <strong>Saitechnoschool</strong> MongoDB database.</p>
   </section>
 
   <section class="directory-section">
-    <div style="max-width: 650px; margin: 0 auto;">
-      <!-- Form posts directly to the Express server route -->
-      <form class="contact-form" action="/api/add-student" method="POST">
-        <h3>New Student Registration</h3>
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Student Details</h2>
+        <p>Information will be saved directly into your MongoDB Atlas cluster.</p>
+      </div>
 
-        <div class="input-group">
-          <input type="text" name="rollNo" placeholder="Roll Number (e.g., STS-2026-05)" required />
+      <div id="errorAlert" class="alert-msg alert-error"></div>
+
+      <!-- Form posting directly to backend POST route -->
+      <form id="addStudentForm" action="/api/add-student" method="POST">
+        
+        <div class="form-group">
+          <label for="rollNo">Roll Number</label>
+          <input type="text" id="rollNo" name="rollNo" placeholder="e.g., STS-2026-001" required />
         </div>
 
-        <div class="input-group">
-          <input type="text" name="name" placeholder="Student Full Name" required />
+        <div class="form-group">
+          <label for="name">Student Full Name</label>
+          <input type="text" id="name" name="name" placeholder="e.g., Rahul Sharma" required />
         </div>
 
-        <div class="input-group">
-          <input type="text" name="dob" placeholder="Date of Birth (DD/MM/YYYY)" required />
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" required />
         </div>
 
-        <div class="input-group">
-          <input type="text" name="classSec" placeholder="Class & Section (e.g., Class 8 - A)" required />
+        <div class="form-group">
+          <label for="classSec">Class & Section</label>
+          <input type="text" id="classSec" name="classSec" placeholder="e.g., Class 8 - A" required />
         </div>
 
-        <div class="input-group">
-          <input type="text" name="guardian" placeholder="Parent / Guardian Name" required />
+        <div class="form-group">
+          <label for="guardian">Parent / Guardian Name</label>
+          <input type="text" id="guardian" name="guardian" placeholder="e.g., Vikram Sharma" required />
         </div>
 
-        <div class="input-group">
-          <input type="tel" name="contact" placeholder="Contact Mobile Number" required />
+        <div class="form-group">
+          <label for="contact">Contact Number</label>
+          <input type="tel" id="contact" name="contact" placeholder="e.g., +91 9876543210" required />
         </div>
 
-        <div class="input-group">
-          <select name="grade" class="styled-select" required>
-            <option value="" disabled selected>Select Performance Grade</option>
+        <div class="form-group">
+          <label for="grade">Academic Performance Grade</label>
+          <select id="grade" name="grade" required>
+            <option value="" disabled selected>Select Grade</option>
             <option value="Grade A+">Grade A+</option>
             <option value="Grade A">Grade A</option>
             <option value="Grade B">Grade B</option>
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Save Student Details <i data-lucide="user-plus"></i></button>
+        <button type="submit" id="submitBtn" class="submit-btn">
+          <span>Save to Saitechnoschool DB</span>
+          <i data-lucide="database"></i>
+        </button>
       </form>
     </div>
   </section>
@@ -80,6 +182,48 @@
 
   <script>
     lucide.createIcons();
+
+    // Client-side JavaScript handling dynamic submission and AJAX feedback
+    const studentForm = document.getElementById('addStudentForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorAlert = document.getElementById('errorAlert');
+
+    studentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // UI Feedback: disable button while processing
+      submitBtn.disabled = true;
+      submitBtn.querySelector('span').innerText = 'Saving to Database...';
+      errorAlert.style.display = 'none';
+
+      const formData = new FormData(studentForm);
+      const payload = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch('/api/add-student', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok || response.redirected) {
+          // Success: redirect to directory view page
+          window.location.href = '/students.html';
+        } else {
+          throw new Error('Failed to save student details to MongoDB Atlas.');
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        errorAlert.innerText = 'Error saving student to MongoDB. Please verify server connection.';
+        errorAlert.style.display = 'block';
+
+        // Reset button
+        submitBtn.disabled = false;
+        submitBtn.querySelector('span').innerText = 'Save to Saitechnoschool DB';
+      }
+    });
   </script>
 </body>
 </html>
