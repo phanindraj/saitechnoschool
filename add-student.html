@@ -125,8 +125,7 @@
 
       <div id="errorAlert" class="alert-msg alert-error"></div>
 
-      <!-- Form posting directly to backend POST route -->
-      <form id="addStudentForm" action="/api/add-student" method="POST">
+      <form id="addStudentForm">
         
         <div class="form-group">
           <label for="rollNo">Roll Number</label>
@@ -181,49 +180,53 @@
   </footer>
 
   <script>
-  lucide.createIcons();
+    lucide.createIcons();
 
-  const studentForm = document.getElementById('addStudentForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const errorAlert = document.getElementById('errorAlert');
+    const studentForm = document.getElementById('addStudentForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorAlert = document.getElementById('errorAlert');
 
-  studentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    submitBtn.disabled = true;
-    submitBtn.querySelector('span').innerText = 'Saving to Database...';
-    if (errorAlert) errorAlert.style.display = 'none';
+    studentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // UI state updates
+      submitBtn.disabled = true;
+      submitBtn.querySelector('span').innerText = 'Saving to Database...';
+      if (errorAlert) errorAlert.style.display = 'none';
 
-    const formData = new FormData(studentForm);
-    const payload = Object.fromEntries(formData.entries());
+      // Convert form values to JSON payload
+      const formData = new FormData(studentForm);
+      const payload = Object.fromEntries(formData.entries());
 
-    try {
-      const response = await fetch('/api/add-student', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+      try {
+        const response = await fetch('/api/add-student', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
 
-      if (response.ok) {
-        // Redirect to directory page on successful insertion
-        window.location.href = 'students.html';
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Server error while saving.');
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          // Success: redirect to student directory list
+          window.location.href = 'students.html';
+        } else {
+          throw new Error(result.error || 'Failed to save student record.');
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        if (errorAlert) {
+          errorAlert.innerText = err.message || 'Error saving student to MongoDB. Please check server logs.';
+          errorAlert.style.display = 'block';
+        }
+
+        // Reset submit button state
+        submitBtn.disabled = false;
+        submitBtn.querySelector('span').innerText = 'Save to Saitechnoschool DB';
       }
-    } catch (err) {
-      console.error('Submission error:', err);
-      if (errorAlert) {
-        errorAlert.innerText = err.message || 'Failed to save student details. Check server connection.';
-        errorAlert.style.display = 'block';
-      }
-
-      submitBtn.disabled = false;
-      submitBtn.querySelector('span').innerText = 'Save to Saitechnoschool DB';
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
