@@ -806,4 +806,42 @@ footer {
   .form-group-full {
     grid-column: span 1;
   }
+/* Submit & Save Button Styles */
+.btn-submit {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  margin-top: 1.5rem;
+  background-color: var(--brand-blue);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 43, 154, 0.25);
+  transition: var(--transition);
+}
+
+.btn-submit:hover {
+  background-color: var(--brand-blue-hover);
+  box-shadow: 0 6px 16px rgba(0, 43, 154, 0.35);
+  transform: translateY(-2px);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 43, 154, 0.2);
+}
+
+.btn-submit:disabled {
+  background-color: var(--text-light);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  opacity: 0.7;
 }

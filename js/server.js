@@ -4,6 +4,8 @@ const path = require('path');
 const cors = require('cors');
 
 const studentRoutes = require('../routes/studentRoutes');
+const teacherRoutes = require('../routes/teacherRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // 3. Mount API Routes BEFORE static assets
 app.use('/api', studentRoutes);
+
+// Mount teacher routes alongside studentRoutes
+app.use('/api', teacherRoutes);
+
 
 // 4. Serve static frontend files
 app.use(express.static(path.join(__dirname, '../')));

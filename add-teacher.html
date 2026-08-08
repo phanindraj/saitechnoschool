@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Teacher - Sai Techno School</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  
+  <style>
+    .form-grid { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: flex; align-items: center; gap: 16px; }
+    .form-row label {
+      width: 190px;
+      flex-shrink: 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1e293b;
+      text-align: right;
+    }
+    .form-row input, .form-row select {
+      flex-grow: 1;
+      padding: 12px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md, 10px);
+      background-color: #f8fafc;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; display: none; font-weight: 600; }
+    .alert-success { background: #dcfce7; color: #15803d; }
+    .alert-error { background: #fee2e2; color: #b91c1c; }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <span><i data-lucide="map-pin" size="14"></i> Sai Techno School Campus, Main Road</span>
+      <div class="top-contact">
+        <span><i data-lucide="phone" size="14"></i> +91 9030550770</span>
+        <span><i data-lucide="mail" size="14"></i> info@saitechnoschool.com</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">Sai Techno School</span>
+        <span class="school-tagline">Excellence in Education</span>
+      </div>
+    </a>
+    
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="students.html">Students Directory</a></li>
+      <li><a href="staff.html">Staff Directory</a></li>
+      <li><a href="add-teacher.html" class="active">Add Teacher</a></li>
+    </ul>
+
+    <button class="mobile-toggle" id="mobileToggle">
+      <i data-lucide="menu" size="24"></i>
+    </button>
+  </nav>
+
+  <header class="directory-hero">
+    <h1>Teacher Registration Portal</h1>
+    <p>Add a new faculty or administrative staff record to MongoDB</p>
+  </header>
+
+  <section class="directory-section alt-bg">
+    <div style="max-width: 680px; margin: 0 auto;">
+      <div class="card highlight-blue">
+        <div class="card-header" style="text-align: center; margin-bottom: 2rem;">
+          <div class="card-icon" style="margin: 0 auto 1rem auto;">
+            <i data-lucide="user-check" size="24"></i>
+          </div>
+          <h3>New Staff Form</h3>
+          <p>Please fill out details to save to MongoDB database.</p>
+        </div>
+
+        <div id="alertBox" class="alert"></div>
+
+        <form id="addTeacherForm" enctype="multipart/form-data">
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="empId">Employee ID</label>
+              <input type="text" id="empId" name="empId" required placeholder="e.g. STS-EMP-101" />
+            </div>
+
+            <div class="form-row">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required placeholder="e.g. DR. R. SHARMA" />
+            </div>
+
+            <div class="form-row">
+              <label for="photo">Teacher Photo</label>
+              <input type="file" id="photo" name="photo" accept="image/*" required />
+            </div>
+
+            <div class="form-row">
+              <label for="department">Department</label>
+              <select id="department" name="department" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value="Primary School">Primary School (Nursery - 5th)</option>
+                <option value="High School">High School (6th - 10th)</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Science">Science & Technology</option>
+                <option value="Languages">Languages & Literature</option>
+                <option value="Administration">Administration & Support</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label for="designation">Designation</label>
+              <input type="text" id="designation" name="designation" required placeholder="e.g. Senior Maths Teacher" />
+            </div>
+
+            <div class="form-row">
+              <label for="qualification">Qualification</label>
+              <input type="text" id="qualification" name="qualification" required placeholder="e.g. M.Sc, B.Ed" />
+            </div>
+
+            <div class="form-row">
+              <label for="contact">Contact Number</label>
+              <input type="text" id="contact" name="contact" required placeholder="e.g. 9876543210" />
+            </div>
+
+            <div class="form-row">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required placeholder="e.g. teacher@saitechnoschool.com" />
+            </div>
+
+            <div class="form-row">
+              <label for="remarks">Remarks / Experience</label>
+              <input type="text" id="remarks" name="remarks" placeholder="e.g. 8+ years experience in CBSE" />
+            </div>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-submit">
+            <i data-lucide="save" size="18"></i> Save Staff Record
+          </button>
+        </form>
+
+        <a href="staff.html" class="nav-link" style="display: block; margin-top: 15px; text-align: center;">&larr; Return to Staff Directory</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Logo" class="footer-logo" />
+        <div>
+          <span style="font-weight: 800; font-size: 1.1rem;">Sai Techno School</span>
+          <p class="copyright">&copy; 2026 Sai Techno School. All rights reserved.</p>
+        </div>
+      </div>
+      <p class="copyright">Empowering young minds for a brighter technological future.</p>
+    </div>
+  </footer>
+
+  <script>
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileToggle) mobileToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000' 
+      : 'https://saitechnoschool.onrender.com';
+
+    const teacherForm = document.getElementById('addTeacherForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const alertBox = document.getElementById('alertBox');
+
+    function showAlert(message, type) {
+      alertBox.className = type === 'success' ? 'alert alert-success' : 'alert alert-error';
+      alertBox.innerText = message;
+      alertBox.style.display = 'block';
+    }
+
+    teacherForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Saving to MongoDB...';
+      alertBox.style.display = 'none';
+
+      const formData = new FormData(teacherForm);
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/add-teacher`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showAlert('Teacher record saved to MongoDB successfully!', 'success');
+          teacherForm.reset();
+        } else {
+          throw new Error(data.error || 'Failed to save record.');
+        }
+      } catch (err) {
+        console.error('Submission Error:', err);
+        showAlert(err.message || 'Server connection error.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i data-lucide="save" size="18"></i> Save Staff Record';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
