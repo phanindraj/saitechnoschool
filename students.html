@@ -4,125 +4,286 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Directory - Sai Techno School</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #f4f7f6; margin: 0; padding: 20px; }
-    .container { max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    h2 { margin: 0; color: #333; }
-    .btn-add { background-color: #28a745; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background-color: #f8f9fa; color: #495057; font-weight: 600; }
-    tr:hover { background-color: #f1f1f1; }
-    .loading, .no-data { text-align: center; padding: 20px; color: #666; font-style: italic; }
-    .error-msg { color: #dc3545; text-align: center; padding: 15px; background: #f8d7da; border-radius: 4px; display: none; }
-  </style>
-
   
+  <!-- Google Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
-
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .class-section-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    .class-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .class-header-bar h3 {
+      margin: 0;
+      color: #1e293b;
+      font-size: 1.25rem;
+    }
+    .toggle-btn {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .toggle-btn:hover {
+      background: #0369a1;
+    }
+    .table-container {
+      overflow-x: auto;
+      padding: 1rem;
+    }
+    .student-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .student-table th, .student-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .student-table th {
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 700;
+    }
+    .empty-msg {
+      padding: 1.5rem;
+      text-align: center;
+      color: #64748b;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
-<nav class="navbar">
+
+  <!-- Top Notification Bar -->
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <span><i data-lucide="map-pin" size="14"></i> Sai Techno School Campus, Main Road</span>
+      <div class="top-contact">
+        <span><i data-lucide="phone" size="14"></i> +91 9030550770</span>
+        <span><i data-lucide="mail" size="14"></i> info@saitechnoschool.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <nav class="navbar">
     <a href="index.html" class="logo-container">
       <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
       <div class="brand-text">
-        <span class="school-name">SAI TECHNO SCHOOL</span>
-        <span class="school-tagline">INSPIRING THE CURIOUS</span>
+        <span class="school-name">Sai Techno School</span>
+        <span class="school-tagline">Excellence in Education</span>
       </div>
     </a>
-    <ul class="nav-links">
+    
+    <ul class="nav-links" id="navLinks">
       <li><a href="index.html">Home</a></li>
       <li><a href="students.html" class="active">Students Directory</a></li>
-      <li><a href="add-student.html" class="btn-apply">+ Add Student</a></li>
+      <li><a href="add-student.html">Add Student</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
     </ul>
+
+    <button class="mobile-toggle" id="mobileToggle">
+      <i data-lucide="menu" size="24"></i>
+    </button>
   </nav>
 
-   <section class="directory-hero">
+  <!-- Page Header -->
+  <header class="directory-hero">
     <h1>Student Directory</h1>
-    <p>Live student records fetched directly from the database file.</p>
-  </section>
+    <p>Live student records categorized by class with hide and unhide options.</p>
+  </header>
 
-  <section class="directory-section">
-    <div class="table-container">
-      <table>
-    <thead>
-      <tr>
-        <th>Roll No</th>
-        <th>Full Name</th>
-        <th>DOB</th>
-        <th>Class & Sec</th>
-        <th>Guardian</th>
-        <th>Contact</th>
-        <th>Grade</th>
-      </tr>
-    </thead>
-    <tbody id="studentTableBody">
-      <tr>
-        <td colspan="7" class="status-msg">Loading records from server...</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Dynamic Class Tables Container -->
+  <main id="directoryContainer" style="padding: 0 1rem;">
+    <!-- Rendered dynamically via script -->
+  </main>
 
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Logo" class="footer-logo" />
+        <div>
+          <span style="font-weight: 800; font-size: 1.1rem;">Sai Techno School</span>
+          <p class="copyright">&copy; 2026 Sai Techno School. All rights reserved.</p>
+        </div>
+      </div>
+      <div>
+        <p class="copyright">Empowering young minds for a brighter technological future.</p>
+      </div>
     </div>
-  </section>
+  </footer>
 
+  <!-- Scripts -->
+  <script>
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
 
-<script>
-  if (typeof lucide !== 'undefined') {
-    lucide.createIcons();
-  }
+    // Mobile Menu Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+    }
 
-  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3000' 
-    : 'https://saitechnoschool.onrender.com';
+    // Load and Categorize Students
+    async function loadDirectory() {
+      let students = [];
 
-  async function fetchStudents() {
-    const tableBody = document.getElementById('studentTableBody');
-    const errorMsg = document.getElementById('errorMsg');
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/students`);
-      
-      if (!response.ok) {
-        throw new Error(`Server returned status ${response.status}`);
+      // 1. Check LocalStorage Cache first
+      const localData = localStorage.getItem('students');
+      if (localData) {
+        try {
+          students = JSON.parse(localData);
+        } catch(e) { console.error(e); }
       }
 
-      const students = await response.json();
-      tableBody.innerHTML = '';
-
+      // 2. Fallback or Sync with student/student.txt if available
       if (students.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" class="status-msg">No students registered yet.</td></tr>';
-        return;
+        try {
+          const response = await fetch('student/student.txt');
+          if (response.ok) {
+            students = await response.json();
+            localStorage.setItem('students', JSON.stringify(students));
+          }
+        } catch (err) {
+          console.log('Could not fetch student.txt directly, using LocalStorage cache.');
+        }
       }
 
-      students.forEach(student => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td><strong>${student.rollNo || 'N/A'}</strong></td>
-          <td>${student.name || 'N/A'}</td>
-          <td>${student.dob || 'N/A'}</td>
-          <td>${student.classSec || 'N/A'}</td>
-          <td>${student.guardian || 'N/A'}</td>
-          <td>${student.contact || 'N/A'}</td>
-          <td class="${student.gradeClass || ''}">${student.grade || 'N/A'}</td>
+      renderClassTables(students);
+    }
+
+    function renderClassTables(students) {
+      const container = document.getElementById('directoryContainer');
+      container.innerHTML = '';
+
+      // Define target sections
+      const targetClasses = [
+        { key: 'nursery', title: 'Nursery Class' },
+        { key: '1st', title: '1st Class' },
+        { key: '2nd', title: '2nd Class' }
+      ];
+
+      targetClasses.forEach(cls => {
+        // Filter students matching the class keyword (case-insensitive search)
+        const filtered = students.filter(s => {
+          const classSec = (s.classSec || '').toLowerCase();
+          return classSec.includes(cls.key);
+        });
+
+        // Create Section Wrapper
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'class-section-container';
+
+        // Header Bar with Toggle Button
+        const headerBar = document.createElement('div');
+        headerBar.className = 'class-header-bar';
+        headerBar.innerHTML = `
+          <h3>${cls.title} (${filtered.length} Students)</h3>
+          <button class="toggle-btn" onclick="toggleTable(this)">
+            <i data-lucide="eye-off" size="16"></i> Hide Table
+          </button>
         `;
-        tableBody.appendChild(row);
+        sectionDiv.appendChild(headerBar);
+
+        // Table Content Wrapper
+        const tableWrapper = document.createElement('div');
+        tableWrapper.className = 'table-container';
+
+        if (filtered.length > 0) {
+          let tableHtml = `
+            <table class="student-table">
+              <thead>
+                <tr>
+                  <th>Roll No</th>
+                  <th>Full Name</th>
+                  <th>DOB</th>
+                  <th>Class & Sec</th>
+                  <th>Guardian</th>
+                  <th>Contact</th>
+                  <th>Grade</th>
+                </tr>
+              </thead>
+              <tbody>
+          `;
+
+          filtered.forEach(s => {
+            tableHtml += `
+              <tr>
+                <td><strong>${s.rollNo || ''}</strong></td>
+                <td>${s.name || ''}</td>
+                <td>${s.dob || ''}</td>
+                <td>${s.classSec || ''}</td>
+                <td>${s.guardian || ''}</td>
+                <td>${s.contact || ''}</td>
+                <td>${s.grade || ''}</td>
+              </tr>
+            `;
+          });
+
+          tableHtml += `</tbody></table>`;
+          tableWrapper.innerHTML = tableHtml;
+        } else {
+          tableWrapper.innerHTML = `<div class="empty-msg">No student records found for ${cls.title}.</div>`;
+        }
+
+        sectionDiv.appendChild(tableWrapper);
+        container.appendChild(sectionDiv);
       });
 
-    } catch (err) {
-      console.error('Fetch Error:', err);
-      tableBody.innerHTML = '';
-      errorMsg.style.display = 'block';
-      errorMsg.innerText = 'Unable to fetch records. If the server was asleep, please wait 20 seconds and refresh.';
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
     }
-  }
 
-  fetchStudents();
-</script>
+    // Hide / Unhide Toggle Function
+    window.toggleTable = function(button) {
+      const sectionContainer = button.closest('.class-section-container');
+      const tableContainer = sectionContainer.querySelector('.table-container');
+      
+      if (tableContainer.style.display === 'none') {
+        tableContainer.style.display = 'block';
+        button.innerHTML = `<i data-lucide="eye-off" size="16"></i> Hide Table`;
+      } else {
+        tableContainer.style.display = 'none';
+        button.innerHTML = `<i data-lucide="eye" size="16"></i> Unhide Table`;
+      }
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    };
+
+    // Load data on page init
+    loadDirectory();
+  </script>
 
 </body>
 </html>
