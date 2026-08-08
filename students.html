@@ -205,7 +205,7 @@
       targetClasses.forEach(cls => {
         // Filter students matching the class keyword (case-insensitive search)
         const filtered = students.filter(s => {
-          const classSec = (s.classSec || '').toUpperCase();
+          const classSec = (s.classSec || '').toLowerCase();
           return classSec.includes(cls.key);
         });
 
