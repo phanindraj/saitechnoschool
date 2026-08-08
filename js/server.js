@@ -10,14 +10,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Reads your MongoDB Atlas connection string securely from environment variable
-const MONGO_URI = mongodb+srv://phani543_db_user:ZgdNnThtCJKuTuK9@saitechno.lxh9qrs.mongodb.net/?appName=SaiTechno;
+// Set to target 'Saitechnoschool' database specifically
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://phani543_db_user:ZgdNnThtCJKuTuK9@saitechno.lxh9qrs.mongodb.net/Saitechnoschool?retryWrites=true&w=majority";
 
 mongoose.connect(MONGO_URI)
-  .then(() => console.log('Successfully connected to MongoDB Atlas!'))
+  .then(() => console.log('Successfully connected to Saitechnoschool database in MongoDB Atlas!'))
   .catch((err) => console.error('MongoDB Atlas connection error:', err));
 
-// Student Schema & Model
+// Student Schema & Model (creates 'students' collection inside 'Saitechnoschool')
 const studentSchema = new mongoose.Schema({
   rollNo: { type: String, required: true },
   name: { type: String, required: true },
