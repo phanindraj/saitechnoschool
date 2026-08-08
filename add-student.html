@@ -47,7 +47,6 @@
       border-radius: 8px;
       font-size: 0.95rem;
       font-family: inherit;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
       box-sizing: border-box;
     }
     .form-group input:focus,
@@ -70,10 +69,6 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      transition: background-color 0.2s ease;
-    }
-    .submit-btn:hover {
-      background-color: #1d4ed8;
     }
     .submit-btn:disabled {
       background-color: #94a3b8;
@@ -126,7 +121,6 @@
       <div id="errorAlert" class="alert-msg alert-error"></div>
 
       <form id="addStudentForm">
-        
         <div class="form-group">
           <label for="rollNo">Roll Number</label>
           <input type="text" id="rollNo" name="rollNo" placeholder="e.g., STS-2026-001" required />
@@ -186,7 +180,6 @@
     const submitBtn = document.getElementById('submitBtn');
     const errorAlert = document.getElementById('errorAlert');
 
-    // Dynamically uses localhost on local testing, or your live Render backend on GitHub Pages
     const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       ? '' 
       : 'https://sai-techno-school.onrender.com';
@@ -204,9 +197,7 @@
       try {
         const response = await fetch(`${API_BASE_URL}/api/add-student`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
@@ -214,13 +205,13 @@
         if (!contentType || !contentType.includes('application/json')) {
           const rawText = await response.text();
           console.error('Non-JSON response:', rawText);
-          throw new Error(`Server status ${response.status}: Render backend is warming up or unavailable.`);
+          throw new Error(`Server returned HTTP ${response.status}. Verify Render backend is active.`);
         }
 
         const result = await response.json();
 
         if (response.ok && result.success) {
-          alert('Student successfully registered!');
+          alert('Student successfully added!');
           window.location.href = 'students.html';
         } else {
           throw new Error(result.error || 'Failed to save student record.');
@@ -228,7 +219,7 @@
       } catch (err) {
         console.error('Submission error:', err);
         if (errorAlert) {
-          errorAlert.innerText = err.message || 'Could not reach server. Please try again.';
+          errorAlert.innerText = err.message || 'Connection failed. Please try again.';
           errorAlert.style.display = 'block';
         }
 
