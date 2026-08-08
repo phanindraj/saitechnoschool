@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Directory - Sai Techno School</title>
+  <link rel="stylesheet" href="css/style.css" />
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: #f4f7f6; margin: 0; padding: 20px; }
@@ -18,33 +19,55 @@
     .loading, .no-data { text-align: center; padding: 20px; color: #666; font-style: italic; }
     .error-msg { color: #dc3545; text-align: center; padding: 15px; background: #f8d7da; border-radius: 4px; display: none; }
   </style>
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
 </head>
 <body>
+<nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">SAI TECHNO SCHOOL</span>
+        <span class="school-tagline">INSPIRING THE CURIOUS</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="students.html" class="active">Students Directory</a></li>
+      <li><a href="add-student.html" class="btn-apply">+ Add Student</a></li>
+    </ul>
+  </nav>
 
-<div class="container">
-  <div class="header">
-    <h2>Student Directory</h2>
-    <a href="add-student.html" class="btn-add">+ Add New Student</a>
-  </div>
+   <section class="directory-hero">
+    <h1>Student Directory</h1>
+    <p>Live student records fetched directly from the database file.</p>
+  </section>
 
-  <div id="errorMsg" class="error-msg"></div>
+  <section class="directory-section">
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Roll No</th>
+            <th>Student Name</th>
+            <th>Class & Sec</th>
+            <th>Guardian Name</th>
+            <th>Contact</th>
+            <th>Performance</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody">
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 2rem;">Loading student data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Roll No</th>
-        <th>Full Name</th>
-        <th>Class</th>
-        <th>Section</th>
-      </tr>
-    </thead>
-    <tbody id="studentTableBody">
-      <tr>
-        <td colspan="4" class="loading">Loading student records...</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 
 <script>
   // Automatic URL Detection: Use localhost when developing, Render when live
