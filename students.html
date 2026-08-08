@@ -175,7 +175,7 @@
     } catch (err) {
       console.warn('Could not fetch from backend API. Falling back to cache/local sources:', err);
       
-      // 2. Fallback to LocalStorage
+      // 2. Fallback to LocalStorage Cache
       const localData = localStorage.getItem('students');
       if (localData) {
         try {
@@ -183,7 +183,7 @@
         } catch(e) { console.error(e); }
       }
 
-      // 3. Fallback to static JSON/TXT file if cache is empty
+      // 3. Fallback to static file if local storage is empty
       if (students.length === 0) {
         try {
           const fileResp = await fetch('student/student.txt');
@@ -222,11 +222,15 @@
     ];
 
     targetClasses.forEach(cls => {
-      // Filter matching uppercase MongoDB values
+      // Robust filter: matches both uppercase/lowercase strings and handles prefixes/sections
       const filtered = students.filter(s => {
         const classSec = (s.classSec || '').toUpperCase().trim();
-        const regex = new RegExp(`\\b${cls.key}\\b`);
-        return regex.test(classSec);
+        
+        // Exact prefix match or isolated key search (e.g. "10TH", "10TH - LILLY", "10th")
+        if (cls.key === '1ST') {
+          return classSec.includes('1ST') && !classSec.includes('10TH');
+        }
+        return classSec.includes(cls.key);
       });
 
       // Create Section Wrapper
@@ -266,7 +270,7 @@
         `;
 
         filtered.forEach(s => {
-          // Force every cell value to UPPERCASE
+          // Display every cell value in UPPERCASE
           const rollNo = (s.rollNo || '').toUpperCase();
           const name = (s.name || '').toUpperCase();
           const dob = (s.dob || '').toUpperCase();
