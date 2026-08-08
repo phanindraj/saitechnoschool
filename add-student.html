@@ -4,163 +4,212 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Student - Sai Techno School</title>
-  <link rel="stylesheet" href="css/style.css" />
+  
+  <!-- Google Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    /* Additional layout adjustments for extended form fields */
-    body {
-      padding: 40px 20px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .card {
-      width: 100%;
-      max-width: 600px;
-      background: #ffffff;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .form-group-full {
-      grid-column: span 2;
-    }
-    @media (max-width: 600px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      .form-group-full {
-        grid-column: span 1;
-      }
-    }
-  </style>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<div class="card">
-  <div class="card-header" style="text-align: center; margin-bottom: 24px;">
-    <h2>Add New Student</h2>
-    <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Sai Techno School Management System</p>
+  <!-- Top Notification Bar -->
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <span><i data-lucide="map-pin" size="14"></i> Sai Techno School Campus, Main Road</span>
+      <div class="top-contact">
+        <span><i data-lucide="phone" size="14"></i> +91 9030550770</span>
+        <span><i data-lucide="mail" size="14"></i> info@saitechnoschool.com</span>
+      </div>
+    </div>
   </div>
 
-  <div id="alertBox" class="alert" style="display:none; padding:12px; border-radius:8px; font-size:14px; margin-bottom:18px; text-align:center; font-weight:500;"></div>
+  <!-- Main Navigation Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <img src="images/logo.png" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">Sai Techno School</span>
+        <span class="school-tagline">Excellence in Education</span>
+      </div>
+    </a>
+    
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="students.html">Students Directory</a></li>
+      <li><a href="add-student.html" class="active">Add Student</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
 
-  <form id="addStudentForm">
-    <div class="form-grid">
+    <button class="mobile-toggle" id="mobileToggle">
+      <i data-lucide="menu" size="24"></i>
+    </button>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="directory-hero">
+    <h1>Student Registration Portal</h1>
+    <p>Add a new student record securely to the Sai Techno School database</p>
+  </header>
+
+  <!-- Form Section -->
+  <section class="directory-section alt-bg">
+    <div style="max-width: 650px; margin: 0 auto;">
       
-      <div class="form-group form-group-full">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" required placeholder="e.g. RISHIT KARTHIKEYA" />
-      </div>
+      <div class="card highlight-blue">
+        <div class="card-header" style="text-align: center; margin-bottom: 2rem;">
+          <div class="card-icon" style="margin: 0 auto 1rem auto;">
+            <i data-lucide="user-plus" size="24"></i>
+          </div>
+          <h3>New Admission Form</h3>
+          <p>Please fill out all required student details accurately.</p>
+        </div>
 
-      <div class="form-group">
-        <label for="rollNo">Roll Number</label>
-        <input type="text" id="rollNo" name="rollNo" required placeholder="e.g. STS-2026-01" />
-      </div>
+        <!-- Alert Box for Notifications -->
+        <div id="alertBox" class="alert"></div>
 
-      <div class="form-group">
-        <label for="dob">Date of Birth</label>
-        <input type="date" id="dob" name="dob" required />
-      </div>
+        <form id="addStudentForm">
+          <div class="form-grid">
+            
+            <div class="form-group form-group-full">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required placeholder="e.g. RISHIT KARTHIKEYA" />
+            </div>
 
-      <div class="form-group">
-        <label for="classSec">Class / Section</label>
-        <input type="text" id="classSec" name="classSec" required placeholder="e.g. 3rd" />
-      </div>
+            <div class="form-group">
+              <label for="rollNo">Roll Number</label>
+              <input type="text" id="rollNo" name="rollNo" required placeholder="e.g. STS-2026-01" />
+            </div>
 
-      <div class="form-group">
-        <label for="guardian">Guardian Name</label>
-        <input type="text" id="guardian" name="guardian" required placeholder="e.g. PHANINDRA" />
-      </div>
+            <div class="form-group">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" name="dob" required />
+            </div>
 
-      <div class="form-group">
-        <label for="contact">Contact Number</label>
-        <input type="text" id="contact" name="contact" required placeholder="e.g. 9030550770" />
-      </div>
+            <div class="form-group">
+              <label for="classSec">Class & Section</label>
+              <input type="text" id="classSec" name="classSec" required placeholder="e.g. Class 3 - Section A" />
+            </div>
 
-      <div class="form-group">
-        <label for="grade">Grade</label>
-        <input type="text" id="grade" name="grade" placeholder="e.g. Grade A" />
-      </div>
+            <div class="form-group">
+              <label for="guardian">Guardian Name</label>
+              <input type="text" id="guardian" name="guardian" required placeholder="e.g. PHANINDRA" />
+            </div>
 
-      <div class="form-group form-group-full">
-        <label for="gradeClass">Performance / Remarks</label>
-        <input type="text" id="gradeClass" name="gradeClass" placeholder="e.g. good" />
+            <div class="form-group">
+              <label for="contact">Contact Number</label>
+              <input type="text" id="contact" name="contact" required placeholder="e.g. 9030550770" />
+            </div>
+
+            <div class="form-group">
+              <label for="grade">Grade / Performance</label>
+              <input type="text" id="grade" name="grade" placeholder="e.g. Grade A" />
+            </div>
+
+            <div class="form-group form-group-full">
+              <label for="gradeClass">Remarks / Additional Notes</label>
+              <input type="text" id="gradeClass" name="gradeClass" placeholder="e.g. Excellent academic performance" />
+            </div>
+
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-submit">
+            <i data-lucide="save" size="18"></i> Save Student Record
+          </button>
+        </form>
+
+        <a href="students.html" class="nav-link">&larr; Return to Students Directory</a>
       </div>
 
     </div>
+  </section>
 
-    <button type="submit" id="submitBtn" class="btn-submit" style="width:100%; padding:12px; background-color:#4f46e5; color:#ffffff; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; margin-top:20px;">Save Student Record</button>
-  </form>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Logo" class="footer-logo" />
+        <div>
+          <span style="font-weight: 800; font-size: 1.1rem;">Sai Techno School</span>
+          <p class="copyright">&copy; 2026 Sai Techno School. All rights reserved.</p>
+        </div>
+      </div>
+      <div>
+        <p class="copyright">Empowering young minds for a brighter technological future.</p>
+      </div>
+    </div>
+  </footer>
 
-  <a href="students.html" class="nav-link" style="display:block; text-align:center; margin-top:20px; color:#4f46e5; text-decoration:none; font-size:14px; font-weight:600;">View All Students Directory &rarr;</a>
-</div>
-
-<script>
-  if (typeof lucide !== 'undefined') {
-    lucide.createIcons();
-  }
-
-  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3000' 
-    : 'https://saitechnoschool.onrender.com';
-
-  const studentForm = document.getElementById('addStudentForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const alertBox = document.getElementById('alertBox');
-
-  function showAlert(message, type) {
-    alertBox.className = type === 'success' ? 'alert alert-success' : 'alert alert-error';
-    alertBox.style.backgroundColor = type === 'success' ? '#d1fae5' : '#fee2e2';
-    alertBox.style.color = type === 'success' ? '#065f46' : '#991b1b';
-    alertBox.innerText = message;
-    alertBox.style.display = 'block';
-  }
-
-  studentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Saving to Database...';
-    alertBox.style.display = 'none';
-
-    const formData = new FormData(studentForm);
-    const payload = Object.fromEntries(formData.entries());
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/add-student`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        showAlert('Student record successfully created!', 'success');
-        studentForm.reset();
-      } else {
-        throw new Error(data.error || 'Failed to add student.');
-      }
-    } catch (err) {
-      console.error('Submission Error:', err);
-      showAlert(err.message || 'Error connecting to the backend server.', 'error');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerText = 'Save Student Record';
+  <!-- Scripts -->
+  <script>
+    // Initialize Lucide Icons
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
     }
-  });
-</script>
+
+    // Mobile Menu Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+    }
+
+    // API Config
+    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000' 
+      : 'https://saitechnoschool.onrender.com';
+
+    const studentForm = document.getElementById('addStudentForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const alertBox = document.getElementById('alertBox');
+
+    function showAlert(message, type) {
+      alertBox.className = type === 'success' ? 'alert alert-success' : 'alert alert-error';
+      alertBox.innerText = message;
+      alertBox.style.display = 'block';
+    }
+
+    studentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Saving to Database...';
+      alertBox.style.display = 'none';
+
+      const formData = new FormData(studentForm);
+      const payload = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/add-student`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showAlert('Student record successfully registered!', 'success');
+          studentForm.reset();
+        } else {
+          throw new Error(data.error || 'Failed to add student.');
+        }
+      } catch (err) {
+        console.error('Submission Error:', err);
+        showAlert(err.message || 'Error connecting to the backend server.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i data-lucide="save" size="18"></i> Save Student Record';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    });
+  </script>
 
 </body>
 </html>
