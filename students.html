@@ -139,25 +139,43 @@
   </footer>
 
   <!-- Scripts -->
-  <script>
-    if (typeof lucide !== 'undefined') {
-      lucide.createIcons();
-    }
+ <script>
+  // Initialize Lucide Icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 
-    // Mobile Menu Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (mobileToggle) {
-      mobileToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('open');
-      });
-    }
+  // Mobile Menu Toggle
+  const mobileToggle = document.getElementById('mobileToggle');
+  const navLinks = document.getElementById('navLinks');
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+  }
 
-    // Load and Categorize Students
-    async function loadDirectory() {
-      let students = [];
+  // API Config
+  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000' 
+    : 'https://saitechnoschool.onrender.com';
 
-      // 1. Check LocalStorage Cache first
+  // Load and Categorize Students
+  async function loadDirectory() {
+    let students = [];
+
+    // 1. Try fetching live data from MongoDB backend API
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/students`);
+      if (response.ok) {
+        students = await response.json();
+        localStorage.setItem('students', JSON.stringify(students));
+      } else {
+        throw new Error('Backend response not OK');
+      }
+    } catch (err) {
+      console.warn('Could not fetch from backend API. Falling back to cache/local sources:', err);
+      
+      // 2. Fallback to LocalStorage
       const localData = localStorage.getItem('students');
       if (localData) {
         try {
@@ -165,135 +183,146 @@
         } catch(e) { console.error(e); }
       }
 
-      // 2. Fallback or Sync with student/student.txt if available
+      // 3. Fallback to static JSON/TXT file if cache is empty
       if (students.length === 0) {
         try {
-          const response = await fetch('student/student.txt');
-          if (response.ok) {
-            students = await response.json();
+          const fileResp = await fetch('student/student.txt');
+          if (fileResp.ok) {
+            students = await fileResp.json();
             localStorage.setItem('students', JSON.stringify(students));
           }
-        } catch (err) {
-          console.log('Could not fetch student.txt directly, using LocalStorage cache.');
+        } catch (fileErr) {
+          console.error('Could not fetch static file either:', fileErr);
         }
       }
-
-      renderClassTables(students);
     }
 
-    function renderClassTables(students) {
-      const container = document.getElementById('directoryContainer');
-      container.innerHTML = '';
+    renderClassTables(students);
+  }
 
-      // Comprehensive list of classes requested
-      const targetClasses = [
-        { key: 'nursery', title: 'Nursery Class' },
-        { key: 'lkg', title: 'LKG Class' },
-        { key: 'ukg', title: 'UKG Class' },
-        { key: '1st', title: '1st Class' },
-        { key: '2nd', title: '2nd Class' },
-        { key: '3rd', title: '3rd Class' },
-        { key: '4th', title: '4th Class' },
-        { key: '5th', title: '5th Class' },
-        { key: '6th', title: '6th Class' },
-        { key: '7th', title: '7th Class' },
-        { key: '8th', title: '8th Class' },
-        { key: '9th', title: '9th Class' },
-        { key: '10th', title: '10th Class' }
-      ];
+  function renderClassTables(students) {
+    const container = document.getElementById('directoryContainer');
+    container.innerHTML = '';
 
-      targetClasses.forEach(cls => {
-        // Filter students matching the class keyword (case-insensitive search)
-        const filtered = students.filter(s => {
-          const classSec = (s.classSec || '').toLowerCase();
-          return classSec.includes(cls.key);
-        });
+    // Comprehensive list of target classes in UPPERCASE
+    const targetClasses = [
+      { key: 'NURSERY', title: 'NURSERY CLASS' },
+      { key: 'LKG', title: 'LKG CLASS' },
+      { key: 'UKG', title: 'UKG CLASS' },
+      { key: '1ST', title: '1ST CLASS' },
+      { key: '2ND', title: '2ND CLASS' },
+      { key: '3RD', title: '3RD CLASS' },
+      { key: '4TH', title: '4TH CLASS' },
+      { key: '5TH', title: '5TH CLASS' },
+      { key: '6TH', title: '6TH CLASS' },
+      { key: '7TH', title: '7TH CLASS' },
+      { key: '8TH', title: '8TH CLASS' },
+      { key: '9TH', title: '9TH CLASS' },
+      { key: '10TH', title: '10TH CLASS' }
+    ];
 
-        // Create Section Wrapper
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'class-section-container';
-
-        // Header Bar with Toggle Button
-        const headerBar = document.createElement('div');
-        headerBar.className = 'class-header-bar';
-        headerBar.innerHTML = `
-          <h3>${cls.title} (${filtered.length} Students)</h3>
-          <button class="toggle-btn" onclick="toggleTable(this)">
-            <i data-lucide="eye-off" size="16"></i> Hide Table
-          </button>
-        `;
-        sectionDiv.appendChild(headerBar);
-
-        // Table Content Wrapper
-        const tableWrapper = document.createElement('div');
-        tableWrapper.className = 'table-container';
-
-        if (filtered.length > 0) {
-          let tableHtml = `
-            <table class="student-table">
-              <thead>
-                <tr>
-                  <th>Roll No</th>
-                  <th>Full Name</th>
-                  <th>DOB</th>
-                  <th>Class & Sec</th>
-                  <th>Guardian</th>
-                  <th>Contact</th>
-                  <th>Grade</th>
-                </tr>
-              </thead>
-              <tbody>
-          `;
-
-          filtered.forEach(s => {
-            tableHtml += `
-              <tr>
-                <td><strong>${s.rollNo || ''}</strong></td>
-                <td>${s.name || ''}</td>
-                <td>${s.dob || ''}</td>
-                <td>${s.classSec || ''}</td>
-                <td>${s.guardian || ''}</td>
-                <td>${s.contact || ''}</td>
-                <td>${s.grade || ''}</td>
-              </tr>
-            `;
-          });
-
-          tableHtml += `</tbody></table>`;
-          tableWrapper.innerHTML = tableHtml;
-        } else {
-          tableWrapper.innerHTML = `<div class="empty-msg">No student records found for ${cls.title}.</div>`;
-        }
-
-        sectionDiv.appendChild(tableWrapper);
-        container.appendChild(sectionDiv);
+    targetClasses.forEach(cls => {
+      // Filter matching uppercase MongoDB values
+      const filtered = students.filter(s => {
+        const classSec = (s.classSec || '').toUpperCase().trim();
+        const regex = new RegExp(`\\b${cls.key}\\b`);
+        return regex.test(classSec);
       });
 
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    }
+      // Create Section Wrapper
+      const sectionDiv = document.createElement('div');
+      sectionDiv.className = 'class-section-container';
 
-    // Hide / Unhide Toggle Function
-    window.toggleTable = function(button) {
-      const sectionContainer = button.closest('.class-section-container');
-      const tableContainer = sectionContainer.querySelector('.table-container');
-      
-      if (tableContainer.style.display === 'none') {
-        tableContainer.style.display = 'block';
-        button.innerHTML = `<i data-lucide="eye-off" size="16"></i> Hide Table`;
+      // Header Bar with Toggle Button
+      const headerBar = document.createElement('div');
+      headerBar.className = 'class-header-bar';
+      headerBar.innerHTML = `
+        <h3>${cls.title} (${filtered.length} STUDENTS)</h3>
+        <button class="toggle-btn" onclick="toggleTable(this)">
+          <i data-lucide="eye-off" size="16"></i> HIDE TABLE
+        </button>
+      `;
+      sectionDiv.appendChild(headerBar);
+
+      // Table Content Wrapper
+      const tableWrapper = document.createElement('div');
+      tableWrapper.className = 'table-container';
+
+      if (filtered.length > 0) {
+        let tableHtml = `
+          <table class="student-table">
+            <thead>
+              <tr>
+                <th>ROLL NO</th>
+                <th>FULL NAME</th>
+                <th>DOB</th>
+                <th>CLASS & SEC</th>
+                <th>GUARDIAN</th>
+                <th>CONTACT</th>
+                <th>GRADE</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        filtered.forEach(s => {
+          // Force every cell value to UPPERCASE
+          const rollNo = (s.rollNo || '').toUpperCase();
+          const name = (s.name || '').toUpperCase();
+          const dob = (s.dob || '').toUpperCase();
+          const classSec = (s.classSec || '').toUpperCase();
+          const guardian = (s.guardian || '').toUpperCase();
+          const contact = (s.contact || '').toUpperCase();
+          const grade = (s.grade || '').toUpperCase();
+
+          tableHtml += `
+            <tr>
+              <td><strong>${rollNo}</strong></td>
+              <td>${name}</td>
+              <td>${dob}</td>
+              <td>${classSec}</td>
+              <td>${guardian}</td>
+              <td>${contact}</td>
+              <td>${grade}</td>
+            </tr>
+          `;
+        });
+
+        tableHtml += `</tbody></table>`;
+        tableWrapper.innerHTML = tableHtml;
       } else {
-        tableContainer.style.display = 'none';
-        button.innerHTML = `<i data-lucide="eye" size="16"></i> Unhide Table`;
+        tableWrapper.innerHTML = `<div class="empty-msg">NO STUDENT RECORDS FOUND FOR ${cls.title}.</div>`;
       }
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    };
 
-    // Load data on page init
-    loadDirectory();
-  </script>
+      sectionDiv.appendChild(tableWrapper);
+      container.appendChild(sectionDiv);
+    });
+
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  }
+
+  // Hide / Unhide Toggle Function
+  window.toggleTable = function(button) {
+    const sectionContainer = button.closest('.class-section-container');
+    const tableContainer = sectionContainer.querySelector('.table-container');
+    
+    if (tableContainer.style.display === 'none') {
+      tableContainer.style.display = 'block';
+      button.innerHTML = `<i data-lucide="eye-off" size="16"></i> HIDE TABLE`;
+    } else {
+      tableContainer.style.display = 'none';
+      button.innerHTML = `<i data-lucide="eye" size="16"></i> UNHIDE TABLE`;
+    }
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  };
+
+  // Load data on page init
+  loadDirectory();
+</script>
 
 </body>
 </html>
