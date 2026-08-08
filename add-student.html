@@ -173,60 +173,69 @@
     <p>&copy; 2026 Sai Techno School. All Rights Reserved.</p>
   </footer>
 
-  <script>
-    lucide.createIcons();
+ <script>
+  lucide.createIcons();
 
-    const studentForm = document.getElementById('addStudentForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const errorAlert = document.getElementById('errorAlert');
+  const studentForm = document.getElementById('addStudentForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const errorAlert = document.getElementById('errorAlert');
 
-    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? '' 
-      : 'https://sai-techno-school.onrender.com';
+  // Exact URL of your deployed Render backend (NO trailing slash)
+  const RENDER_BACKEND_URL = 'https://sai-techno-school.onrender.com';
 
-    studentForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      submitBtn.disabled = true;
-      submitBtn.querySelector('span').innerText = 'Saving to Database...';
-      if (errorAlert) errorAlert.style.display = 'none';
+  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? '' 
+    : RENDER_BACKEND_URL;
 
-      const formData = new FormData(studentForm);
-      const payload = Object.fromEntries(formData.entries());
+  studentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    submitBtn.disabled = true;
+    submitBtn.querySelector('span').innerText = 'Saving to Database...';
+    if (errorAlert) errorAlert.style.display = 'none';
 
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/add-student`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+    const formData = new FormData(studentForm);
+    const payload = Object.fromEntries(formData.entries());
 
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          const rawText = await response.text();
-          console.error('Non-JSON response:', rawText);
-          throw new Error(`Server returned HTTP ${response.status}. Verify Render backend is active.`);
-        }
+    try {
+      const endpoint = `${API_BASE_URL}/api/add-student`;
+      console.log('Sending request to:', endpoint);
 
-        const result = await response.json();
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
 
-        if (response.ok && result.success) {
-          alert('Student successfully added!');
-          window.location.href = 'students.html';
-        } else {
-          throw new Error(result.error || 'Failed to save student record.');
-        }
-      } catch (err) {
-        console.error('Submission error:', err);
-        if (errorAlert) {
-          errorAlert.innerText = err.message || 'Connection failed. Please try again.';
-          errorAlert.style.display = 'block';
-        }
-
-        submitBtn.disabled = false;
-        submitBtn.querySelector('span').innerText = 'Save to Saitechnoschool DB';
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const rawText = await response.text();
+        console.error('Non-JSON Response Received:', rawText);
+        throw new Error(`Server at ${API_BASE_URL} returned status ${response.status} (${response.statusText}). Make sure your Render URL is correct and server is running.`);
       }
-    });
-  </script>
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        alert('Student successfully registered!');
+        window.location.href = 'students.html';
+      } else {
+        throw new Error(result.error || 'Failed to save student record.');
+      }
+    } catch (err) {
+      console.error('Submission error:', err);
+      if (errorAlert) {
+        errorAlert.innerText = err.message || 'Error connecting to server.';
+        errorAlert.style.display = 'block';
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.querySelector('span').innerText = 'Save to Saitechnoschool DB';
+    }
+  });
+</script>
 </body>
 </html>
