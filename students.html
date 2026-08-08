@@ -70,7 +70,10 @@
 
 
 <script>
-  // Automatic URL Detection: Use localhost when developing, Render when live
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+
   const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3000' 
     : 'https://saitechnoschool.onrender.com';
@@ -90,17 +93,20 @@
       tableBody.innerHTML = '';
 
       if (students.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="4" class="no-data">No student records found in database.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="7" class="status-msg">No students registered yet.</td></tr>';
         return;
       }
 
       students.forEach(student => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${student.rollNo || 'N/A'}</td>
+          <td><strong>${student.rollNo || 'N/A'}</strong></td>
           <td>${student.name || 'N/A'}</td>
-          <td>${student.class || 'N/A'}</td>
-          <td>${student.section || 'N/A'}</td>
+          <td>${student.dob || 'N/A'}</td>
+          <td>${student.classSec || 'N/A'}</td>
+          <td>${student.guardian || 'N/A'}</td>
+          <td>${student.contact || 'N/A'}</td>
+          <td class="${student.gradeClass || ''}">${student.grade || 'N/A'}</td>
         `;
         tableBody.appendChild(row);
       });
@@ -109,11 +115,10 @@
       console.error('Fetch Error:', err);
       tableBody.innerHTML = '';
       errorMsg.style.display = 'block';
-      errorMsg.innerText = 'Unable to fetch student list. Backend may still be starting up—please refresh in 20 seconds.';
+      errorMsg.innerText = 'Unable to fetch records. If the server was asleep, please wait 20 seconds and refresh.';
     }
   }
 
-  // Load students on page startup
   fetchStudents();
 </script>
 
