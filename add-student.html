@@ -1,61 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Student - Sai Techno School</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; justify-content: center; }
-    .container { background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
-    h2 { color: #333; margin-bottom: 20px; text-align: center; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; color: #666; font-weight: 600; }
-    input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-    button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-    button:disabled { background-color: #a0c4ff; cursor: not-allowed; }
-    .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; display: none; text-align: center; font-size: 14px; }
-    .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-    .nav-link { display: block; text-align: center; margin-top: 15px; color: #007bff; text-decoration: none; }
+    /* Additional layout adjustments for extended form fields */
+    body {
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      width: 100%;
+      max-width: 600px;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group-full {
+      grid-column: span 2;
+    }
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group-full {
+        grid-column: span 1;
+      }
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>Add New Student</h2>
-  
-  <div id="alertBox" class="alert"></div>
+<div class="card">
+  <div class="card-header" style="text-align: center; margin-bottom: 24px;">
+    <h2>Add New Student</h2>
+    <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Sai Techno School Management System</p>
+  </div>
+
+  <div id="alertBox" class="alert" style="display:none; padding:12px; border-radius:8px; font-size:14px; margin-bottom:18px; text-align:center; font-weight:500;"></div>
 
   <form id="addStudentForm">
-    <div class="form-group">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required placeholder="John Doe">
+    <div class="form-grid">
+      
+      <div class="form-group form-group-full">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required placeholder="e.g. RISHIT KARTHIKEYA" />
+      </div>
+
+      <div class="form-group">
+        <label for="rollNo">Roll Number</label>
+        <input type="text" id="rollNo" name="rollNo" required placeholder="e.g. STS-2026-01" />
+      </div>
+
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required />
+      </div>
+
+      <div class="form-group">
+        <label for="classSec">Class / Section</label>
+        <input type="text" id="classSec" name="classSec" required placeholder="e.g. 3rd" />
+      </div>
+
+      <div class="form-group">
+        <label for="guardian">Guardian Name</label>
+        <input type="text" id="guardian" name="guardian" required placeholder="e.g. PHANINDRA" />
+      </div>
+
+      <div class="form-group">
+        <label for="contact">Contact Number</label>
+        <input type="text" id="contact" name="contact" required placeholder="e.g. 9030550770" />
+      </div>
+
+      <div class="form-group">
+        <label for="grade">Grade</label>
+        <input type="text" id="grade" name="grade" placeholder="e.g. Grade A" />
+      </div>
+
+      <div class="form-group form-group-full">
+        <label for="gradeClass">Performance / Remarks</label>
+        <input type="text" id="gradeClass" name="gradeClass" placeholder="e.g. good" />
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="rollNo">Roll Number</label>
-      <input type="text" id="rollNo" name="rollNo" required placeholder="ST101">
-    </div>
-
-    <div class="form-group">
-      <label for="class">Class / Grade</label>
-      <input type="text" id="class" name="class" required placeholder="Class 10">
-    </div>
-
-    <div class="form-group">
-      <label for="section">Section</label>
-      <input type="text" id="section" name="section" placeholder="A">
-    </div>
-
-    <button type="submit" id="submitBtn">Save Student Record</button>
+    <button type="submit" id="submitBtn" class="btn-submit" style="width:100%; padding:12px; background-color:#4f46e5; color:#ffffff; border:none; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; margin-top:20px;">Save Student Record</button>
   </form>
 
-  <a href="students.html" class="nav-link">View All Students Directory &rarr;</a>
+  <a href="students.html" class="nav-link" style="display:block; text-align:center; margin-top:20px; color:#4f46e5; text-decoration:none; font-size:14px; font-weight:600;">View All Students Directory &rarr;</a>
 </div>
 
 <script>
-  // Automatic URL Detection: Use localhost when developing, Render when live
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+
   const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3000' 
     : 'https://saitechnoschool.onrender.com';
@@ -65,7 +117,9 @@
   const alertBox = document.getElementById('alertBox');
 
   function showAlert(message, type) {
-    alertBox.className = `alert alert-${type}`;
+    alertBox.className = type === 'success' ? 'alert alert-success' : 'alert alert-error';
+    alertBox.style.backgroundColor = type === 'success' ? '#d1fae5' : '#fee2e2';
+    alertBox.style.color = type === 'success' ? '#065f46' : '#991b1b';
     alertBox.innerText = message;
     alertBox.style.display = 'block';
   }
@@ -73,9 +127,8 @@
   studentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // UI Loading state
     submitBtn.disabled = true;
-    submitBtn.innerText = 'Saving to Database (may take 30s if waking up)...';
+    submitBtn.innerText = 'Saving to Database...';
     alertBox.style.display = 'none';
 
     const formData = new FormData(studentForm);
@@ -94,7 +147,7 @@
       const data = await response.json();
 
       if (response.ok) {
-        showAlert('Student record added successfully!', 'success');
+        showAlert('Student record successfully created!', 'success');
         studentForm.reset();
       } else {
         throw new Error(data.error || 'Failed to add student.');
