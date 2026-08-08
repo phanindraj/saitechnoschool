@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Directory - Sai Techno School</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">SAI TECHNO SCHOOL</span>
+        <span class="school-tagline">INSPIRING THE CURIOUS</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="students.html" class="active">Students Directory</a></li>
+      <li><a href="add-student.html" class="btn-apply">+ Add Student</a></li>
+    </ul>
+  </nav>
+
+  <section class="directory-hero">
+    <h1>Student Directory</h1>
+    <p>Live student records fetched directly from the database file.</p>
+  </section>
+
+  <section class="directory-section">
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Roll No</th>
+            <th>Student Name</th>
+            <th>Class & Sec</th>
+            <th>Guardian Name</th>
+            <th>Contact</th>
+            <th>Performance</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody">
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 2rem;">Loading student data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Sai Techno School. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    async function fetchStudents() {
+      const tableBody = document.getElementById('studentTableBody');
+      try {
+        const response = await fetch('/api/students');
+        const students = await response.json();
+
+        if (students.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem;">No student records found. Add one from the entry form!</td></tr>`;
+          return;
+        }
+
+        tableBody.innerHTML = '';
+        const colors = ['yellow', 'red', 'blue'];
+
+        students.forEach((student, index) => {
+          const avatarColor = colors[index % colors.length];
+          const initial = student.name ? student.name.charAt(0) : 'S';
+
+          tableBody.innerHTML += `
+            <tr>
+              <td><strong>${student.rollNo}</strong></td>
+              <td>
+                <div class="profile-cell">
+                  <div class="avatar ${avatarColor}">${initial}</div>
+                  <div>
+                    <strong>${student.name}</strong>
+                    <small>DOB: ${student.dob}</small>
+                  </div>
+                </div>
+              </td>
+              <td>${student.classSec}</td>
+              <td>${student.guardian}</td>
+              <td>${student.contact}</td>
+              <td><span class="grade-badge ${student.gradeClass}">${student.grade}</span></td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--brand-red); padding: 2rem;">Error fetching student records.</td></tr>`;
+      }
+    }
+
+    lucide.createIcons();
+    fetchStudents();
+  </script>
+</body>
+</html>
