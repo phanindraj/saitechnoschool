@@ -1,156 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Directory - Sai Techno School</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    .directory-container {
-      max-width: 1100px;
-      margin: 2rem auto;
-      background: #ffffff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-    .directory-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    .directory-table th, .directory-table td {
-      padding: 0.9rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 0.95rem;
-    }
-    .directory-table th {
-      background-color: #f8fafc;
-      color: #334155;
-      font-weight: 700;
-    }
-    .badge {
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-    .badge-excellent {
-      background-color: #dcfce7;
-      color: #166534;
-    }
-    .badge-good {
-      background-color: #dbeafe;
-      color: #1e40af;
-    }
-    .loading-text, .empty-text {
-      text-align: center;
-      padding: 2rem;
-      color: #64748b;
-    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f7f6; margin: 0; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    h2 { margin: 0; color: #333; }
+    .btn-add { background-color: #28a745; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #f8f9fa; color: #495057; font-weight: 600; }
+    tr:hover { background-color: #f1f1f1; }
+    .loading, .no-data { text-align: center; padding: 20px; color: #666; font-style: italic; }
+    .error-msg { color: #dc3545; text-align: center; padding: 15px; background: #f8d7da; border-radius: 4px; display: none; }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <a href="index.html" class="logo-container">
-      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
-      <div class="brand-text">
-        <span class="school-name">SAI TECHNO SCHOOL</span>
-        <span class="school-tagline">INSPIRING THE CURIOUS</span>
-      </div>
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="students.html" class="active">Student Directory</a></li>
-      <li><a href="add-student.html">Add Student</a></li>
-    </ul>
-  </nav>
+<div class="container">
+  <div class="header">
+    <h2>Student Directory</h2>
+    <a href="add-student.html" class="btn-add">+ Add New Student</a>
+  </div>
 
-  <section class="directory-hero">
-    <h1>Student Directory</h1>
-    <p>Live registered student records retrieved directly from MongoDB Atlas.</p>
-  </section>
+  <div id="errorMsg" class="error-msg"></div>
 
-  <section class="directory-section">
-    <div class="directory-container">
-      <div id="loading" class="loading-text">Loading student records...</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Full Name</th>
+        <th>Class</th>
+        <th>Section</th>
+      </tr>
+    </thead>
+    <tbody id="studentTableBody">
+      <tr>
+        <td colspan="4" class="loading">Loading student records...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // Automatic URL Detection: Use localhost when developing, Render when live
+  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000' 
+    : 'https://saitechnoschool.onrender.com';
+
+  async function fetchStudents() {
+    const tableBody = document.getElementById('studentTableBody');
+    const errorMsg = document.getElementById('errorMsg');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/students`);
       
-      <table id="studentsTable" class="directory-table" style="display: none;">
-        <thead>
-          <tr>
-            <th>Roll No</th>
-            <th>Name</th>
-            <th>Class / Sec</th>
-            <th>Guardian</th>
-            <th>Contact</th>
-            <th>Grade</th>
-          </tr>
-        </thead>
-        <tbody id="studentTableBody"></tbody>
-      </table>
-
-      <div id="emptyMessage" class="empty-text" style="display: none;">No student records found in database.</div>
-    </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2026 Sai Techno School. All Rights Reserved.</p>
-  </footer>
-
-  <script>
-    lucide.createIcons();
-
-    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? '' 
-      : 'https://sai-techno-school.onrender.com';
-
-    async function loadStudents() {
-      const loading = document.getElementById('loading');
-      const table = document.getElementById('studentsTable');
-      const tbody = document.getElementById('studentTableBody');
-      const emptyMessage = document.getElementById('emptyMessage');
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/students`);
-        
-        if (!response.ok) throw new Error('Failed to fetch students.');
-
-        const students = await response.json();
-
-        loading.style.display = 'none';
-
-        if (!students || students.length === 0) {
-          emptyMessage.style.display = 'block';
-          return;
-        }
-
-        tbody.innerHTML = students.map(student => `
-          <tr>
-            <td><strong>${student.rollNo || 'N/A'}</strong></td>
-            <td>${student.name}</td>
-            <td>${student.classSec}</td>
-            <td>${student.guardian}</td>
-            <td>${student.contact}</td>
-            <td>
-              <span class="badge ${student.gradeClass === 'excellent' ? 'badge-excellent' : 'badge-good'}">
-                ${student.grade || 'Grade A'}
-              </span>
-            </td>
-          </tr>
-        `).join('');
-
-        table.style.display = 'table';
-      } catch (err) {
-        console.error('Fetch error:', err);
-        loading.innerText = 'Error loading student directory from server.';
+      if (!response.ok) {
+        throw new Error(`Server returned status ${response.status}`);
       }
-    }
 
-    loadStudents();
-  </script>
+      const students = await response.json();
+      tableBody.innerHTML = '';
+
+      if (students.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4" class="no-data">No student records found in database.</td></tr>';
+        return;
+      }
+
+      students.forEach(student => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${student.rollNo || 'N/A'}</td>
+          <td>${student.name || 'N/A'}</td>
+          <td>${student.class || 'N/A'}</td>
+          <td>${student.section || 'N/A'}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+    } catch (err) {
+      console.error('Fetch Error:', err);
+      tableBody.innerHTML = '';
+      errorMsg.style.display = 'block';
+      errorMsg.innerText = 'Unable to fetch student list. Backend may still be starting up—please refresh in 20 seconds.';
+    }
+  }
+
+  // Load students on page startup
+  fetchStudents();
+</script>
+
 </body>
 </html>
