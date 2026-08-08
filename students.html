@@ -7,6 +7,51 @@
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .directory-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    .directory-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .directory-table th, .directory-table td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 0.95rem;
+    }
+    .directory-table th {
+      background-color: #f8fafc;
+      color: #334155;
+      font-weight: 700;
+    }
+    .badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-excellent {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    .badge-good {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    .loading-text, .empty-text {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+    }
+  </style>
 </head>
 <body>
 
@@ -20,38 +65,35 @@
     </a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="activities.html">Activities</a></li>
-      <li><a href="staff.html" class="active">Staff</a></li>
-      <li><a href="students.html">Students</a></li>
-      <li><a href="feedback.html">Feedback</a></li>
-      <li><a href="add-student.html" class="btn-apply">+ Add Student</a></li>
+      <li><a href="students.html" class="active">Student Directory</a></li>
+      <li><a href="add-student.html">Add Student</a></li>
     </ul>
   </nav>
 
   <section class="directory-hero">
     <h1>Student Directory</h1>
-    <p>Live student records fetched directly from the database file.</p>
+    <p>Live registered student records retrieved directly from MongoDB Atlas.</p>
   </section>
 
   <section class="directory-section">
-    <div class="table-container">
-      <table class="data-table">
+    <div class="directory-container">
+      <div id="loading" class="loading-text">Loading student records...</div>
+      
+      <table id="studentsTable" class="directory-table" style="display: none;">
         <thead>
           <tr>
             <th>Roll No</th>
-            <th>Student Name</th>
-            <th>Class & Sec</th>
-            <th>Guardian Name</th>
+            <th>Name</th>
+            <th>Class / Sec</th>
+            <th>Guardian</th>
             <th>Contact</th>
-            <th>Performance</th>
+            <th>Grade</th>
           </tr>
         </thead>
-        <tbody id="studentTableBody">
-          <tr>
-            <td colspan="6" style="text-align: center; padding: 2rem;">Loading student data...</td>
-          </tr>
-        </tbody>
+        <tbody id="studentTableBody"></tbody>
       </table>
+
+      <div id="emptyMessage" class="empty-text" style="display: none;">No student records found in database.</div>
     </div>
   </section>
 
@@ -60,50 +102,55 @@
   </footer>
 
   <script>
-    async function fetchStudents() {
-      const tableBody = document.getElementById('studentTableBody');
+    lucide.createIcons();
+
+    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? '' 
+      : 'https://sai-techno-school.onrender.com';
+
+    async function loadStudents() {
+      const loading = document.getElementById('loading');
+      const table = document.getElementById('studentsTable');
+      const tbody = document.getElementById('studentTableBody');
+      const emptyMessage = document.getElementById('emptyMessage');
+
       try {
-        const response = await fetch('/api/students');
+        const response = await fetch(`${API_BASE_URL}/api/students`);
+        
+        if (!response.ok) throw new Error('Failed to fetch students.');
+
         const students = await response.json();
 
-        if (students.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem;">No student records found. Add one from the entry form!</td></tr>`;
+        loading.style.display = 'none';
+
+        if (!students || students.length === 0) {
+          emptyMessage.style.display = 'block';
           return;
         }
 
-        tableBody.innerHTML = '';
-        const colors = ['yellow', 'red', 'blue'];
+        tbody.innerHTML = students.map(student => `
+          <tr>
+            <td><strong>${student.rollNo || 'N/A'}</strong></td>
+            <td>${student.name}</td>
+            <td>${student.classSec}</td>
+            <td>${student.guardian}</td>
+            <td>${student.contact}</td>
+            <td>
+              <span class="badge ${student.gradeClass === 'excellent' ? 'badge-excellent' : 'badge-good'}">
+                ${student.grade || 'Grade A'}
+              </span>
+            </td>
+          </tr>
+        `).join('');
 
-        students.forEach((student, index) => {
-          const avatarColor = colors[index % colors.length];
-          const initial = student.name ? student.name.charAt(0) : 'S';
-
-          tableBody.innerHTML += `
-            <tr>
-              <td><strong>${student.rollNo}</strong></td>
-              <td>
-                <div class="profile-cell">
-                  <div class="avatar ${avatarColor}">${initial}</div>
-                  <div>
-                    <strong>${student.name}</strong>
-                    <small>DOB: ${student.dob}</small>
-                  </div>
-                </div>
-              </td>
-              <td>${student.classSec}</td>
-              <td>${student.guardian}</td>
-              <td>${student.contact}</td>
-              <td><span class="grade-badge ${student.gradeClass}">${student.grade}</span></td>
-            </tr>
-          `;
-        });
+        table.style.display = 'table';
       } catch (err) {
-        tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--brand-red); padding: 2rem;">Error fetching student records.</td></tr>`;
+        console.error('Fetch error:', err);
+        loading.innerText = 'Error loading student directory from server.';
       }
     }
 
-    lucide.createIcons();
-    fetchStudents();
+    loadStudents();
   </script>
 </body>
 </html>
