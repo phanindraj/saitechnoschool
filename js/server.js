@@ -2,67 +2,30 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 
+// Import routes relative to the js/ directory
+const studentRoutes = require('../routes/studentRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// Body parser middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Set to target 'Saitechnoschool' database specifically
+// 1. Mount API routes FIRST under '/api' prefix to prevent static route conflicts
+app.use('/api', studentRoutes);
+
+// 2. Serve static frontend files from 'public' directory (one level up from js/)
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Connect to MongoDB Atlas (Saitechnoschool Database)
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://phani543_db_user:ZgdNnThtCJKuTuK9@saitechno.lxh9qrs.mongodb.net/Saitechnoschool?retryWrites=true&w=majority";
 
 mongoose.connect(MONGO_URI)
-  .then(() => console.log('Successfully connected to Saitechnoschool database in MongoDB Atlas!'))
+  .then(() => console.log('Successfully connected to Saitechnoschool database on MongoDB Atlas!'))
   .catch((err) => console.error('MongoDB Atlas connection error:', err));
 
-// Student Schema & Model (creates 'students' collection inside 'Saitechnoschool')
-const studentSchema = new mongoose.Schema({
-  rollNo: { type: String, required: true },
-  name: { type: String, required: true },
-  dob: { type: String, required: true },
-  classSec: { type: String, required: true },
-  guardian: { type: String, required: true },
-  contact: { type: String, required: true },
-  grade: { type: String, default: 'Grade A' },
-  gradeClass: { type: String, default: 'good' },
-  createdAt: { type: Date, default: Date.now }
-});
-
-const Student = mongoose.model('Student', studentSchema);
-
-// GET API: Fetch students
-app.get('/api/students', async (req, res) => {
-  try {
-    const students = await Student.find().sort({ createdAt: -1 });
-    res.json(students);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch student data.' });
-  }
-});
-
-// POST API: Save student
-app.post('/api/add-student', async (req, res) => {
-  try {
-    const newStudent = new Student({
-      rollNo: req.body.rollNo,
-      name: req.body.name,
-      dob: req.body.dob,
-      classSec: req.body.classSec,
-      guardian: req.body.guardian,
-      contact: req.body.contact,
-      grade: req.body.grade || 'Grade A',
-      gradeClass: req.body.grade === 'Grade A+' ? 'excellent' : 'good'
-    });
-
-    await newStudent.save();
-    res.redirect('/students.html');
-  } catch (error) {
-    res.status(500).send('Error saving student to MongoDB Atlas.');
-  }
-});
-
+// Start Node server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
