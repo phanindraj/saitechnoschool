@@ -11,6 +11,33 @@
   
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Inline fix to align labels and inputs horizontally as requested */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 12px 16px;
+      align-items: center;
+    }
+    .form-group-full {
+      grid-column: span 2;
+    }
+    .form-group {
+      display: contents; /* Allows label and input to act directly as grid items */
+    }
+    .form-group label {
+      margin-bottom: 0;
+      text-align: right;
+    }
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group label {
+        text-align: left;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -28,7 +55,7 @@
   <!-- Main Navigation Bar -->
   <nav class="navbar">
     <a href="index.html" class="logo-container">
-      <img src="images/logo.png" alt="Sai Techno School Logo" class="brand-logo" />
+      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
       <div class="brand-text">
         <span class="school-name">Sai Techno School</span>
         <span class="school-tagline">Excellence in Education</span>
@@ -72,8 +99,8 @@
         <form id="addStudentForm">
           <div class="form-grid">
             
-            <div class="form-group form-group-full">
-              <label for="name">Full Name</label>
+            <div class="form-group form-group-full" style="display: block; margin-bottom: 8px;">
+              <label for="name" style="text-align: left; margin-bottom: 6px;">Full Name</label>
               <input type="text" id="name" name="name" required placeholder="e.g. RISHIT KARTHIKEYA" />
             </div>
 
@@ -107,8 +134,8 @@
               <input type="text" id="grade" name="grade" placeholder="e.g. Grade A" />
             </div>
 
-            <div class="form-group form-group-full">
-              <label for="gradeClass">Remarks / Additional Notes</label>
+            <div class="form-group form-group-full" style="display: block; margin-top: 8px;">
+              <label for="gradeClass" style="text-align: left; margin-bottom: 6px;">Remarks / Additional Notes</label>
               <input type="text" id="gradeClass" name="gradeClass" placeholder="e.g. Excellent academic performance" />
             </div>
 
