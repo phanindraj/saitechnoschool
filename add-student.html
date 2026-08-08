@@ -12,7 +12,7 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* Table layout styling to keep label and input completely on one single line */
+    /* Table layout styling to keep every label and input completely on one single line */
     .form-grid {
       display: flex;
       flex-direction: column;
@@ -35,15 +35,6 @@
     .form-row select {
       flex-grow: 1;
       width: 100%;
-    }
-    .form-row-full {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .form-row-full label {
-      text-align: left;
-      width: 100%;
-      margin-bottom: 6px;
     }
   </style>
 </head>
@@ -107,7 +98,7 @@
         <form id="addStudentForm">
           <div class="form-grid">
             
-            <div class="form-row form-row-full">
+            <div class="form-row">
               <label for="name">Full Name</label>
               <input type="text" id="name" name="name" required placeholder="e.g. FIRSTNAME LASTNAME" />
             </div>
@@ -129,7 +120,7 @@
 
             <div class="form-row">
               <label for="guardian">Guardian Name</label>
-              <input type="text" id="guardian" name="guardian" required placeholder="e.g. GUARDIAN NAME" />
+              <input type="text" id="guardian" name="guardian" required placeholder="e.g. Guardian Name" />
             </div>
 
             <div class="form-row">
@@ -139,7 +130,7 @@
 
             <div class="form-row">
               <label for="grade">Grade / Performance</label>
-              <select id="grade" name="grade" class="styled-select" required>
+              <select id="grade" name="grade" class="styled-select">
                 <option value="" disabled selected>Select Performance Grade</option>
                 <option value="Grade A+">Grade A+</option>
                 <option value="Grade A">Grade A</option>
@@ -147,7 +138,7 @@
               </select>
             </div>
 
-            <div class="form-row form-row-full">
+            <div class="form-row">
               <label for="gradeClass">Remarks / Additional Notes</label>
               <input type="text" id="gradeClass" name="gradeClass" placeholder="e.g. Excellent academic performance" />
             </div>
