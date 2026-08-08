@@ -1,0 +1,13 @@
+{
+  "name": "sai-techno-school",
+  "version": "1.0.0",
+  "description": "Student Directory Web Application backed by MongoDB Atlas",
+  "main": "js/server.js",
+  "scripts": {
+    "start": "node js/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.4.1"
+  }
+}
