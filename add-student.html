@@ -1,241 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Student - Sai Techno School</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    .form-container {
-      max-width: 600px;
-      margin: 2rem auto;
-      background: #ffffff;
-      padding: 2.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-    .form-header {
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-    .form-header h2 {
-      font-size: 1.8rem;
-      color: #1e293b;
-      margin-bottom: 0.5rem;
-    }
-    .form-header p {
-      color: #64748b;
-      font-size: 0.95rem;
-    }
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #334155;
-      font-size: 0.9rem;
-    }
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      box-sizing: border-box;
-    }
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-    .submit-btn {
-      width: 100%;
-      padding: 0.85rem;
-      background-color: #2563eb;
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .submit-btn:disabled {
-      background-color: #94a3b8;
-      cursor: not-allowed;
-    }
-    .alert-msg {
-      display: none;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-    .alert-error {
-      background-color: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+    h2 { color: #333; margin-bottom: 20px; text-align: center; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; color: #666; font-weight: 600; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+    button:disabled { background-color: #a0c4ff; cursor: not-allowed; }
+    .alert { padding: 10px; margin-bottom: 15px; border-radius: 4px; display: none; text-align: center; font-size: 14px; }
+    .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .nav-link { display: block; text-align: center; margin-top: 15px; color: #007bff; text-decoration: none; }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <a href="index.html" class="logo-container">
-      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
-      <div class="brand-text">
-        <span class="school-name">SAI TECHNO SCHOOL</span>
-        <span class="school-tagline">INSPIRING THE CURIOUS</span>
-      </div>
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="students.html">Student Directory</a></li>
-      <li><a href="add-student.html" class="active">Add Student</a></li>
-    </ul>
-  </nav>
+<div class="container">
+  <h2>Add New Student</h2>
+  
+  <div id="alertBox" class="alert"></div>
 
-  <section class="directory-hero">
-    <h1>Register New Student</h1>
-    <p>Fill out the form below to save data into the <strong>Saitechnoschool</strong> MongoDB database.</p>
-  </section>
-
-  <section class="directory-section">
-    <div class="form-container">
-      <div class="form-header">
-        <h2>Student Details</h2>
-        <p>Information will be saved directly into your MongoDB Atlas cluster.</p>
-      </div>
-
-      <div id="errorAlert" class="alert-msg alert-error"></div>
-
-      <form id="addStudentForm">
-        <div class="form-group">
-          <label for="rollNo">Roll Number</label>
-          <input type="text" id="rollNo" name="rollNo" placeholder="e.g., STS-2026-001" required />
-        </div>
-
-        <div class="form-group">
-          <label for="name">Student Full Name</label>
-          <input type="text" id="name" name="name" placeholder="e.g., Rahul Sharma" required />
-        </div>
-
-        <div class="form-group">
-          <label for="dob">Date of Birth</label>
-          <input type="date" id="dob" name="dob" required />
-        </div>
-
-        <div class="form-group">
-          <label for="classSec">Class & Section</label>
-          <input type="text" id="classSec" name="classSec" placeholder="e.g., Class 8 - A" required />
-        </div>
-
-        <div class="form-group">
-          <label for="guardian">Parent / Guardian Name</label>
-          <input type="text" id="guardian" name="guardian" placeholder="e.g., Vikram Sharma" required />
-        </div>
-
-        <div class="form-group">
-          <label for="contact">Contact Number</label>
-          <input type="tel" id="contact" name="contact" placeholder="e.g., +91 9876543210" required />
-        </div>
-
-        <div class="form-group">
-          <label for="grade">Academic Performance Grade</label>
-          <select id="grade" name="grade" required>
-            <option value="" disabled selected>Select Grade</option>
-            <option value="Grade A+">Grade A+</option>
-            <option value="Grade A">Grade A</option>
-            <option value="Grade B">Grade B</option>
-          </select>
-        </div>
-
-        <button type="submit" id="submitBtn" class="submit-btn">
-          <span>Save to Saitechnoschool DB</span>
-          <i data-lucide="database"></i>
-        </button>
-      </form>
+  <form id="addStudentForm">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required placeholder="John Doe">
     </div>
-  </section>
 
-  <footer>
-    <p>&copy; 2026 Sai Techno School. All Rights Reserved.</p>
-  </footer>
+    <div class="form-group">
+      <label for="rollNo">Roll Number</label>
+      <input type="text" id="rollNo" name="rollNo" required placeholder="ST101">
+    </div>
 
- <script>
-  lucide.createIcons();
+    <div class="form-group">
+      <label for="class">Class / Grade</label>
+      <input type="text" id="class" name="class" required placeholder="Class 10">
+    </div>
+
+    <div class="form-group">
+      <label for="section">Section</label>
+      <input type="text" id="section" name="section" placeholder="A">
+    </div>
+
+    <button type="submit" id="submitBtn">Save Student Record</button>
+  </form>
+
+  <a href="students.html" class="nav-link">View All Students Directory &rarr;</a>
+</div>
+
+<script>
+  // Automatic URL Detection: Use localhost when developing, Render when live
+  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000' 
+    : 'https://saitechnoschool.onrender.com';
 
   const studentForm = document.getElementById('addStudentForm');
   const submitBtn = document.getElementById('submitBtn');
-  const errorAlert = document.getElementById('errorAlert');
+  const alertBox = document.getElementById('alertBox');
 
-  // Exact URL of your deployed Render backend (NO trailing slash)
-  const RENDER_BACKEND_URL = 'https://sai-techno-school.onrender.com';
-
-  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? '' 
-    : RENDER_BACKEND_URL;
+  function showAlert(message, type) {
+    alertBox.className = `alert alert-${type}`;
+    alertBox.innerText = message;
+    alertBox.style.display = 'block';
+  }
 
   studentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
+    // UI Loading state
     submitBtn.disabled = true;
-    submitBtn.querySelector('span').innerText = 'Saving to Database...';
-    if (errorAlert) errorAlert.style.display = 'none';
+    submitBtn.innerText = 'Saving to Database (may take 30s if waking up)...';
+    alertBox.style.display = 'none';
 
     const formData = new FormData(studentForm);
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      const endpoint = `${API_BASE_URL}/api/add-student`;
-      console.log('Sending request to:', endpoint);
-
-      const response = await fetch(endpoint, {
+      const response = await fetch(`${API_BASE_URL}/api/add-student`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify(payload)
       });
 
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const rawText = await response.text();
-        console.error('Non-JSON Response Received:', rawText);
-        throw new Error(`Server at ${API_BASE_URL} returned status ${response.status} (${response.statusText}). Make sure your Render URL is correct and server is running.`);
-      }
+      const data = await response.json();
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert('Student successfully registered!');
-        window.location.href = 'students.html';
+      if (response.ok) {
+        showAlert('Student record added successfully!', 'success');
+        studentForm.reset();
       } else {
-        throw new Error(result.error || 'Failed to save student record.');
+        throw new Error(data.error || 'Failed to add student.');
       }
     } catch (err) {
-      console.error('Submission error:', err);
-      if (errorAlert) {
-        errorAlert.innerText = err.message || 'Error connecting to server.';
-        errorAlert.style.display = 'block';
-      }
-
+      console.error('Submission Error:', err);
+      showAlert(err.message || 'Error connecting to the backend server.', 'error');
+    } finally {
       submitBtn.disabled = false;
-      submitBtn.querySelector('span').innerText = 'Save to Saitechnoschool DB';
+      submitBtn.innerText = 'Save Student Record';
     }
   });
 </script>
+
 </body>
 </html>
