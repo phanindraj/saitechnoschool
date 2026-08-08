@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-// Define Schema for Student records
+// Define Student Schema & Model matching form inputs
 const studentSchema = new mongoose.Schema({
   rollNo: { type: String, required: true },
   name: { type: String, required: true },
@@ -15,15 +15,25 @@ const studentSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Bind to 'students' collection inside 'Saitechnoschool' DB
+// Binds to 'students' collection inside 'Saitechnoschool' DB
 const Student = mongoose.model('Student', studentSchema);
 
-// POST /api/add-student — Save student data
+// GET /api/students — Fetch all students
+router.get('/students', async (req, res) => {
+  try {
+    const students = await Student.find().sort({ createdAt: -1 });
+    res.status(200).json(students);
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch student records.' });
+  }
+});
+
+// POST /api/add-student — Save new student data to MongoDB
 router.post('/add-student', async (req, res) => {
   try {
     const { rollNo, name, dob, classSec, guardian, contact, grade } = req.body;
 
-    // Node.js Mongoose Instance creation
     const newStudent = new Student({
       rollNo,
       name,
@@ -35,21 +45,20 @@ router.post('/add-student', async (req, res) => {
       gradeClass: grade === 'Grade A+' ? 'excellent' : 'good'
     });
 
-    // Save document to MongoDB Atlas
     const savedStudent = await newStudent.save();
-    console.log('Saved to MongoDB Atlas:', savedStudent.name);
+    console.log(`Saved student record: ${savedStudent.name}`);
 
-    // Return success response to frontend
+    // Return JSON response for frontend fetch handler
     res.status(201).json({
       success: true,
       message: 'Student record saved successfully!',
       student: savedStudent
     });
   } catch (error) {
-    console.error('Database save error:', error);
+    console.error('Error saving student:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to save student data to MongoDB Atlas.'
+      error: 'Failed to save student record to MongoDB Atlas.'
     });
   }
 });
