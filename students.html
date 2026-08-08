@@ -48,23 +48,25 @@
 
   <section class="directory-section">
     <div class="table-container">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Roll No</th>
-            <th>Student Name</th>
-            <th>Class & Sec</th>
-            <th>Guardian Name</th>
-            <th>Contact</th>
-            <th>Performance</th>
-          </tr>
-        </thead>
-        <tbody id="studentTableBody">
-          <tr>
-            <td colspan="6" style="text-align: center; padding: 2rem;">Loading student data...</td>
-          </tr>
-        </tbody>
-      </table>
+      <table>
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Full Name</th>
+        <th>DOB</th>
+        <th>Class & Sec</th>
+        <th>Guardian</th>
+        <th>Contact</th>
+        <th>Grade</th>
+      </tr>
+    </thead>
+    <tbody id="studentTableBody">
+      <tr>
+        <td colspan="7" class="status-msg">Loading records from server...</td>
+      </tr>
+    </tbody>
+  </table>
+
     </div>
   </section>
 
