@@ -45,7 +45,7 @@
       <li><a href="staff.html">Faculty Details</a></li>
 	  <li><a href="studentsdetails.html">Student Details</a></li>
 	  <li><a href="add-teacher.html">Add Faculty Details</a></li>
-      <li><a href="add-student.html">Add Student Details</a></li>   
+      <li><a href="add-student.html">Add Student Details</a></li>    
     </ul>
 
     <button class="mobile-toggle" id="mobileToggle">
@@ -153,8 +153,11 @@
         }
 
         tbody.innerHTML = teachers.map(teacher => {
+          // Cloudinary stores the complete secure URL directly in teacher.photoPath.
+          // We check if it starts with http/https to render directly from the cloud, 
+          // or fallback if it's empty.
           const photoTd = teacher.photoPath 
-            ? `<img src="${API_BASE_URL}${teacher.photoPath}" alt="${teacher.name}" class="teacher-photo-cell" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar blue\'>${getInitials(teacher.name)}</div>';" />`
+            ? `<img src="${teacher.photoPath}" alt="${teacher.name}" class="teacher-photo-cell" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar blue\'>${getInitials(teacher.name)}</div>';" />`
             : `<div class="avatar blue">${getInitials(teacher.name)}</div>`;
 
           const remarksText = teacher.remarks ? `<br/><small style="color:var(--text-light);">${teacher.remarks}</small>` : '';

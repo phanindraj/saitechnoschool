@@ -155,8 +155,8 @@
         }
 
         tbody.innerHTML = teachers.map(teacher => {
-          const photoTd = teacher.photoPath 
-            ? `<img src="${API_BASE_URL}${teacher.photoPath}" alt="${teacher.name}" class="teacher-photo-cell" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar blue\'>${getInitials(teacher.name)}</div>';" />`
+           const photoTd = teacher.photoPath 
+            ? `<img src="${teacher.photoPath}" alt="${teacher.name}" class="teacher-photo-cell" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar blue\'>${getInitials(teacher.name)}</div>';" />`
             : `<div class="avatar blue">${getInitials(teacher.name)}</div>`;
 
           const remarksText = teacher.remarks ? `<br/><small style="color:var(--text-light);">${teacher.remarks}</small>` : '';
