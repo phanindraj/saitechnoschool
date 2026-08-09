@@ -309,8 +309,28 @@
 
     <!-- Developer Credit Section -->
     <div class="footer-credits">
-      Developed by <span>PHANINDRA JAGANNADULA</span>
+      Developed by <span onclick="openDeveloperModal()" style="color: #ffcc00; cursor: pointer; text-decoration: underline;">PHANINDRA JAGANNADULA</span>
     </div>
+
+    <!-- Developer Profile Pop-up Modal (Already in your index.html) -->
+    <div id="developerModal" class="dev-modal-overlay">
+      <div class="dev-modal-content">
+        <button class="dev-close-btn" onclick="closeDeveloperModal()">&times;</button>
+        <div class="dev-profile-header">
+          <img src="../../images/Developer.jpeg" alt="Phanindra Jagannadula" class="dev-photo" />
+          <h3>PHANINDRA JAGANNADULA</h3>
+          <p class="dev-role">Developer & Creator</p>
+        </div>
+        <div class="dev-contact-details">
+          <p><i data-lucide="phone"></i> <a href="tel:+9030550770">+91 9030550770</a></p>
+          <p><i data-lucide="mail"></i> <a href="mailto:phani.543@gmail.com">phani.543@gmail.com</a></p>
+        </div>
+      </div>
+    </div>
+
+
+
+  <script src="../../js/customjs.js"></script>
   </footer>
 
   <!-- Scripts -->
