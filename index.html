@@ -4,20 +4,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sai Techno School | Inspiring The Curious</title>
+  <link rel="icon" type="image/jpeg" href="images/sts.gif" />
   <link rel="stylesheet" href="css/style.css" />
   <!-- Google Fonts & Lucide Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<!--
+<style>
+  .ai-effect-container {
+    position: relative;
+    display: inline-block;
+    padding: 4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4285F4, #9333ea, #ec4899, #22c55e);
+    animation: aiShimmer 3s linear infinite;
+  }
+
+  @keyframes aiShimmer {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+
+  .ai-effect-container img {
+    display: block;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+</style>
+-->
+<style>
+  .ai-effect-container {
+    position: relative;
+    display: inline-block;
+    padding: 6px;
+    border-radius: 50%;
+    background: #ffcc00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+    animation: pulseOnly 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseOnly {
+    0% {
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(255, 204, 0, 0.9), 0 0 10px rgba(30, 58, 138, 0.4);
+    }
+    100% {
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    }
+  }
+
+  .ai-effect-container img {
+    display: block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Smooth transition for the book open/close effect */
+    transition: transform 0.6s ease-in-out;
+  }
+
+  /* Hover effect to make the book look like it opens up / scales dynamically */
+  .ai-effect-container:hover img {
+    transform: scale(1.08) rotate(3deg);
+  }
+</style>
+
+
+
+
 
   <!-- Top Notification Bar -->
   <div class="top-bar">
     <div class="top-bar-content">
       <span><i data-lucide="sparkles"></i> Admissions Open for Academic Session 2026-2027</span>
       <div class="top-contact">
-        <span><i data-lucide="phone"></i> +91 98765 43210</span>
-        <span><i data-lucide="mail"></i> info@saitechnoschool.edu</span>
+        <span><i data-lucide="phone"></i> +91 9704862382</span>
+        <span><i data-lucide="mail"></i> info@saitechnoschool.co.in</span>
       </div>
     </div>
   </div>
@@ -25,7 +92,10 @@
   <!-- Unified Main Navigation -->
   <nav class="navbar">
     <a href="index.html" class="logo-container">
-      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+     <!-- <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" /> -->
+	  <div class="ai-effect-container">
+		<img src="images/sts.gif" alt="AI Styled Logo" />
+	</div>
       <div class="brand-text">
         <span class="school-name">SAI TECHNO SCHOOL</span>
         <span class="school-tagline">INSPIRING THE CURIOUS</span>
@@ -34,10 +104,11 @@
     
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="activities.html">Activities</a></li>
-      <li><a href="staff.html">Staff Details</a></li>
-      <li><a href="students.html">Student Details</a></li>
-      <li><a href="feedback.html">Feedback</a></li>
+      <li><a href="pages/users/activities.html">Activities</a></li>
+      <li><a href="pages/users/faculty.html">Faculty Details</a></li>
+      <li><a href="pages/users/students.html">Student Details</a></li>
+      <li><a href="pages/users/feedback.html">Feedback</a></li>
+	  <li><a href="login.html">Login</a></li>
       <li><a href="#contact" class="btn-apply">Apply Now</a></li>
     </ul>
 
@@ -140,9 +211,9 @@
         <h2>Get in Touch with Us</h2>
         <p>Join the Sai Techno School family today. Fill out the form or reach us via phone or email.</p>
         <ul class="contact-list">
-          <li><i data-lucide="map-pin"></i> Main Campus Road, City Center, India</li>
-          <li><i data-lucide="mail"></i> admissions@saitechnoschool.edu</li>
-          <li><i data-lucide="phone"></i> +91 98765 43210 / +91 98765 43211</li>
+          <li><i data-lucide="map-pin"></i> Durga Nagar Village,Sangareddy,Kistareddypeta,Hyderabad-502319,Telangana India</li>
+          <li><i data-lucide="mail"></i> admissions@saitechnoschool.co.in</li>
+          <li><i data-lucide="phone"></i> +91 9912299981 / +91 9704862382</li>
         </ul>
       </div>
 
@@ -166,13 +237,22 @@
   </section>
 
   <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Sai Techno School" class="footer-logo" />
-        <p><strong>SAI TECHNO SCHOOL</strong><br>Inspiring The Curious</p>
+   <footer class="school-footer">
+    <!-- Brand / Logo Section -->
+    <div class="footer-brand">
+     <img src="images/sts.gif" alt="Sai Techno School" class="footer-logo"  />
+      <div class="footer-brand-text">
+        <h3>SAI TECHNO SCHOOL</h3>
+        <p>Inspiring The Curious</p>
       </div>
-      <p class="copyright">&copy; 2026 Sai Techno School. All Rights Reserved.</p>
+    </div>
+
+    <!-- Copyright Section -->
+    <p class="footer-copy">&copy; 2026 Sai Techno School. All Rights Reserved.</p>
+
+    <!-- Developer Credit Section -->
+    <div class="footer-credits">
+      Developed by <span>PHANINDRA JAGANNADULA</span>
     </div>
   </footer>
 

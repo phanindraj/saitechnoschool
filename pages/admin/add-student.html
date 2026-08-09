@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Student - Sai Techno School</title>
+  
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Table layout styling to keep every label and input completely on one single line */
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .form-row label {
+      width: 190px;
+      flex-shrink: 0;
+      margin-bottom: 0;
+      text-align: right;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1e293b;
+      white-space: nowrap;
+    }
+    .form-row input,
+    .form-row select {
+      flex-grow: 1;
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background-color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.25s ease-in-out;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .form-row input:focus,
+    .form-row select:focus {
+      border-color: #0284c7;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .form-row input::placeholder {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Notification Bar -->
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <span><i data-lucide="map-pin" size="14"></i> Sai Techno School Campus, Main Road</span>
+      <div class="top-contact">
+        <span><i data-lucide="phone" size="14"></i> +91 9030550770</span>
+        <span><i data-lucide="mail" size="14"></i> info@saitechnoschool.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">Sai Techno School</span>
+        <span class="school-tagline">Excellence in Education</span>
+      </div>
+    </a>
+    
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="students.html">Students Directory</a></li>
+      <li><a href="add-student.html" class="active">Add Student</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+
+    <button class="mobile-toggle" id="mobileToggle">
+      <i data-lucide="menu" size="24"></i>
+    </button>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="directory-hero">
+    <h1>Student Registration Portal</h1>
+    <p>Add a new student record securely to the Sai Techno School database</p>
+  </header>
+
+  <!-- Form Section -->
+  <section class="directory-section alt-bg">
+    <div style="max-width: 680px; margin: 0 auto;">
+      
+      <div class="card highlight-blue">
+        <div class="card-header" style="text-align: center; margin-bottom: 2rem;">
+          <div class="card-icon" style="margin: 0 auto 1rem auto;">
+            <i data-lucide="user-plus" size="24"></i>
+          </div>
+          <h3>New Admission Form</h3>
+          <p>Please fill out all required student details accurately.</p>
+        </div>
+
+        <!-- Alert Box for Notifications -->
+        <div id="alertBox" class="alert"></div>
+
+        <form id="addStudentForm">
+          <div class="form-grid">
+            
+            <div class="form-row">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required placeholder="e.g. FIRSTNAME LASTNAME" />
+            </div>
+
+            <div class="form-row">
+              <label for="rollNo">Roll Number</label>
+              <input type="text" id="rollNo" name="rollNo" required placeholder="e.g. STS-2026-01" />
+            </div>
+
+            <div class="form-row">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" name="dob" required />
+            </div>
+
+            <div class="form-row">
+			  <label>Class & Section</label>
+			  <div style="display: flex; gap: 10px; width: 100%;">
+				<select id="classSelect" required style="flex: 1;">
+				  <option value="" disabled selected>Select Class</option>
+				  <option value="Nursery">Nursery</option>
+				  <option value="LKG">LKG</option>
+				  <option value="UKG">UKG</option>
+				  <option value="1st">1st</option>
+				  <option value="2nd">2nd</option>
+				  <option value="3rd">3rd</option>
+				  <option value="4th">4th</option>
+				  <option value="5th">5th</option>
+				  <option value="6th">6th</option>
+				  <option value="7th">7th</option>
+				  <option value="8th">8th</option>
+				  <option value="9th">9th</option>
+				  <option value="10th">10th</option>
+				</select>
+
+				<select id="sectionSelect" required style="flex: 1;">
+				  <option value="" disabled selected>Select Section</option>
+				  <option value="Lilly">Lilly</option>
+				  <option value="Rose">Rose</option>
+				  <option value="Marigold">Marigold</option>
+				  <option value="Jasmine">Jasmine</option>
+				  <option value="Lotus">Lotus</option>
+				</select>
+			  </div>
+			</div>
+
+            <div class="form-row">
+              <label for="guardian">Guardian Name</label>
+              <input type="text" id="guardian" name="guardian" required placeholder="e.g. GUARDIAN NAME" />
+            </div>
+
+            <div class="form-row">
+              <label for="contact">Contact Number</label>
+              <input type="text" id="contact" name="contact" required placeholder="e.g. 987654321" />
+            </div>
+
+            <div class="form-row">
+              <label for="grade">Grade / Performance</label>
+              <select id="grade" name="grade" required>
+                <option value="" disabled selected>Select Performance Grade</option>
+                <option value="Grade A+">Grade A+</option>
+                <option value="Grade A">Grade A</option>
+                <option value="Grade B">Grade B</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label for="gradeClass">Remarks / Additional Notes</label>
+              <input type="text" id="gradeClass" name="gradeClass" placeholder="e.g. Excellent academic performance" />
+            </div>
+
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-submit" style="margin-top: 24px;">
+            <i data-lucide="save" size="18"></i> Save Student Record
+          </button>
+        </form>
+
+        <a href="students.html" class="nav-link" style="display: block; margin-top: 15px; text-align: center;">&larr; Return to Students Directory</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Logo" class="footer-logo" />
+        <div>
+          <span style="font-weight: 800; font-size: 1.1rem;">Sai Techno School</span>
+          <p class="copyright">&copy; 2026 Sai Techno School. All rights reserved.</p>
+        </div>
+      </div>
+      <div>
+        <p class="copyright">Empowering young minds for a brighter technological future.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+  // Initialize Lucide Icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
+
+  // Mobile Menu Toggle
+  const mobileToggle = document.getElementById('mobileToggle');
+  const navLinks = document.getElementById('navLinks');
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+  }
+
+  // API Config
+  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000' 
+    : 'https://saitechnoschool.onrender.com';
+
+  const studentForm = document.getElementById('addStudentForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const alertBox = document.getElementById('alertBox');
+
+  function showAlert(message, type) {
+    alertBox.className = type === 'success' ? 'alert alert-success' : 'alert alert-error';
+    alertBox.innerText = message;
+    alertBox.style.display = 'block';
+  }
+
+  studentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Saving to Database...';
+    alertBox.style.display = 'none';
+
+    // Extract form entries
+    const formData = new FormData(studentForm);
+    const rawPayload = Object.fromEntries(formData.entries());
+
+    // Combine Class and Section dropdowns into 'classSec'
+    const classVal = document.getElementById('classSelect') ? document.getElementById('classSelect').value : '';
+    const sectionVal = document.getElementById('sectionSelect') ? document.getElementById('sectionSelect').value : '';
+    
+    if (classVal && sectionVal) {
+      rawPayload.classSec = `${classVal} - ${sectionVal}`;
+    }
+
+    // Convert all text string values to UPPERCASE
+    const payload = {};
+    for (const key in rawPayload) {
+      if (typeof rawPayload[key] === 'string') {
+        payload[key] = rawPayload[key].trim().toUpperCase();
+      } else {
+        payload[key] = rawPayload[key];
+      }
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/add-student`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      // Check if response is valid JSON before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server returned HTML instead of JSON. Verify backend endpoint.');
+      }
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showAlert('Student record successfully registered!', 'success');
+        studentForm.reset();
+      } else {
+        throw new Error(data.error || 'Failed to add student.');
+      }
+    } catch (err) {
+      console.error('Submission Error:', err);
+      showAlert(err.message || 'Error connecting to the backend server.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i data-lucide="save" size="18"></i> Save Student Record';
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+  });
+</script>
+
+</body>
+</html>

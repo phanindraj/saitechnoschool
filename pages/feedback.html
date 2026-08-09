@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback Form - Sai Techno School</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">SAI TECHNO SCHOOL</span>
+        <span class="school-tagline">INSPIRING THE CURIOUS</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="staff.html">Staff</a></li>
+      <li><a href="students.html">Students</a></li>
+      <li><a href="feedback.html" class="active">Feedback</a></li>
+    </ul>
+  </nav>
+
+  <section class="directory-hero">
+    <h1>Parent & Student Feedback</h1>
+    <p>Your feedback helps us continuously improve our campus and academics.</p>
+  </section>
+
+  <section class="directory-section">
+    <div style="max-width: 650px; margin: 0 auto;">
+      <form class="contact-form" id="feedbackForm">
+        <h3>Share Your Thoughts</h3>
+        
+        <div class="input-group">
+          <input type="text" placeholder="Your Full Name" required />
+        </div>
+
+        <div class="input-group">
+          <input type="email" placeholder="Your Email Address" required />
+        </div>
+
+        <div class="input-group">
+          <select class="styled-select" required>
+            <option value="" disabled selected>Select Feedback Category</option>
+            <option value="Academics">Academics & Teaching</option>
+            <option value="Robotics & Tech">Robotics & Tech Facilities</option>
+            <option value="Sports">Sports & Infrastructure</option>
+            <option value="General">General Feedback</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <textarea rows="5" placeholder="Write your detailed feedback here..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Feedback <i data-lucide="send"></i></button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Sai Techno School. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+    document.getElementById('feedbackForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for your valuable feedback!');
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>

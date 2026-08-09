@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Directory - Sai Techno School</title>
+  <link rel="icon" type="image/jpeg" href="../../images/sts.gif" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../../css/style.css" />
+  
+  <style>
+    .teacher-photo-cell {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--brand-blue, #002b9a);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <span><i data-lucide="sparkles"></i> Admissions Open for Academic Session 2026-2027</span>
+      <div class="top-contact">
+        <span><i data-lucide="phone"></i> +91 9704862382</span>
+        <span><i data-lucide="mail"></i> info@saitechnoschool.co.in</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <a href="../../index.html" class="logo-container">
+      <img src="../../images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">Sai Techno School</span>
+        <span class="school-tagline">Excellence in Education</span>
+      </div>
+    </a>
+    
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../../index.html">Home</a></li>
+       <li><a href="activities.html">Activities</a></li>
+      <li><a href="faculty.html">Faculty Details</a></li>
+      <li><a href="students.html">Student Details</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+      
+    </ul>
+
+    <button class="mobile-toggle" id="mobileToggle">
+      <i data-lucide="menu" size="24"></i>
+    </button>
+  </nav>
+
+  <header class="directory-hero">
+    <h1>Faculty & Administration Staff</h1>
+    <p>Our experienced educators dedicated to student growth and academic success.</p>
+  </header>
+
+  <section class="directory-section alt-bg">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Staff ID</th>
+              <th>Name</th>
+              <th>Department</th>
+              <th>Designation</th>
+              <th>Qualification</th>
+              <th>Contact</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody id="staffTableBody">
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px;">
+                Fetching teachers from MongoDB database...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 24px; text-align: center;">
+        <a href="add-teacher.html" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px;">
+          <i data-lucide="user-plus" size="18"></i> Add New Teacher
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+   <footer class="school-footer">
+    <!-- Brand / Logo Section -->
+    <div class="footer-brand">
+     <img src="../../images/sts.gif" alt="Sai Techno School" class="footer-logo"  />
+      <div class="footer-brand-text">
+        <h3>SAI TECHNO SCHOOL</h3>
+        <p>Inspiring The Curious</p>
+      </div>
+    </div>
+
+    <!-- Copyright Section -->
+    <p class="footer-copy">&copy; 2026 Sai Techno School. All Rights Reserved.</p>
+
+    <!-- Developer Credit Section -->
+    <div class="footer-credits">
+      Developed by <span>PHANINDRA JAGANNADULA</span>
+    </div>
+  </footer>
+
+  <script>
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileToggle) mobileToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000' 
+      : 'https://saitechnoschool.onrender.com';
+
+    function getInitials(name) {
+      if (!name) return 'ST';
+      const parts = name.trim().split(' ');
+      return parts.length >= 2 
+        ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        : name.substring(0, 2).toUpperCase();
+    }
+
+    async function loadTeachersFromMongoDB() {
+      const tbody = document.getElementById('staffTableBody');
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/teachers`);
+        if (!response.ok) throw new Error('Failed to load MongoDB records.');
+
+        const teachers = await response.json();
+
+        if (teachers.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px;">
+                No staff records found in MongoDB. Click "Add New Teacher" above to register staff.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = teachers.map(teacher => {
+          const photoTd = teacher.photoPath 
+            ? `<img src="${API_BASE_URL}${teacher.photoPath}" alt="${teacher.name}" class="teacher-photo-cell" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar blue\'>${getInitials(teacher.name)}</div>';" />`
+            : `<div class="avatar blue">${getInitials(teacher.name)}</div>`;
+
+          const remarksText = teacher.remarks ? `<br/><small style="color:var(--text-light);">${teacher.remarks}</small>` : '';
+
+          return `
+            <tr>
+              <td>${photoTd}</td>
+              <td><strong>${teacher.empId || 'N/A'}</strong></td>
+              <td>
+                <div>
+                  <strong>${teacher.name || 'Unnamed'}</strong>
+                  ${remarksText}
+                </div>
+              </td>
+              <td>${teacher.department || 'N/A'}</td>
+              <td>${teacher.designation || 'N/A'}</td>
+              <td>${teacher.qualification || 'N/A'}</td>
+              <td>${teacher.contact || 'N/A'}</td>
+              <td>${teacher.email || 'N/A'}</td>
+            </tr>
+          `;
+        }).join('');
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      } catch (err) {
+        console.error('MongoDB load error:', err);
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 20px; color: var(--brand-red, #e51c23);">
+              Unable to fetch teacher records from MongoDB server.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadTeachersFromMongoDB);
+  </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpeg" href="images/sts.gif" />
+  <title>Sai Techno School - Login Portal</title>
+  <style>
+    :root {
+      --navy: #051336;
+      --gold: #ffcc00;
+      --gold-hover: #e6b800;
+      --white: #ffffff;
+      --gray-light: #f8fafc;
+      --gray-text: #475569;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #051336 0%, #0a1f59 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-wrapper {
+      background: var(--white);
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      border-top: 5px solid var(--gold);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header styling */
+    .login-header {
+      text-align: center;
+      padding: 30px 20px 10px 20px;
+    }
+
+    .login-header img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .login-header img:hover {
+      transform: scale(1.05);
+    }
+
+    .login-header h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .login-header p {
+      margin: 5px 0 0 0;
+      color: var(--gray-text);
+      font-size: 0.9rem;
+    }
+
+    /* Role Selection Tabs */
+    .role-tabs {
+      display: flex;
+      background: #f1f5f9;
+      padding: 6px;
+      margin: 20px 25px 0 25px;
+      border-radius: 10px;
+    }
+
+    .role-tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gray-text);
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .role-tab.active {
+      background: var(--navy);
+      color: var(--gold);
+      box-shadow: 0 4px 10px rgba(5, 19, 54, 0.2);
+    }
+
+    /* Form Content */
+    .login-form-container {
+      padding: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(5, 19, 54, 0.1);
+    }
+
+    /* Submit Button */
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.1s ease;
+      margin-top: 5px;
+    }
+
+    .login-btn:hover {
+      background: var(--gold-hover);
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Footer link inside card */
+    .login-card-footer {
+      text-align: center;
+      padding: 0 25px 25px 25px;
+    }
+
+    .login-card-footer a {
+      color: var(--navy);
+      font-size: 0.85rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-card-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Form sections visibility toggle */
+    .form-section {
+      display: none;
+    }
+    .form-section.active {
+      display: block;
+    }
+
+    /* Modal Overlay Styling */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 19, 54, 0.6);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    /* Modal Box Styling */
+    .modal-content {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 350px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border-top: 4px solid var(--gold);
+      animation: scaleUp 0.3s ease-in-out;
+    }
+
+    @keyframes scaleUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: var(--navy);
+      font-size: 1.2rem;
+    }
+
+    .modal-content p {
+      color: var(--gray-text);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 15px 0 20px 0;
+    }
+
+    .modal-close-btn {
+      background: var(--navy);
+      color: var(--gold);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: #0a1f59;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrapper">
+    <!-- Header with School Logo linked to index.html -->
+    <div class="login-header">
+      <a href="index.html">
+        <img src="images/logo.jpeg" alt="Sai Techno School Logo">
+      </a>
+      <h2>Portal Login</h2>
+      <p>Select your role to access your account</p>
+    </div>
+
+    <!-- Role Selection Tabs -->
+    <div class="role-tabs">
+      <button class="role-tab active" onclick="switchRole('student', event)">Parent / Student</button>
+      <button class="role-tab" onclick="switchRole('faculty', event)">Faculty Login</button>
+    </div>
+
+    <!-- Login Forms Container -->
+    <div class="login-form-container">
+      
+      <!-- Parent / Student Login Form -->
+      <form id="student-form" class="form-section active" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="student-id">Student ID / Registered Email</label>
+          <input type="text" id="student-id" placeholder="Enter ID or Email" required>
+        </div>
+        <div class="form-group">
+          <label for="student-password">Password</label>
+          <input type="password" id="student-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="login-btn">Login as Student/Parent</button>
+      </form>
+
+      <!-- Faculty Login Form -->
+      <form id="faculty-form" class="form-section" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="faculty-id">Faculty ID / Email</label>
+          <input type="text" id="faculty-id" placeholder="Enter Faculty ID" required>
+        </div>
+        <div class="form-group">
+          <label for="faculty-password">Password</label>
+          <input type="password" id="faculty-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="login-btn">Login as Faculty</button>
+      </form>
+
+    </div>
+
+    <!-- Footer link triggering popup -->
+    <div class="login-card-footer">
+      <a href="#" onclick="showAdminModal(event)">Forgot Password?</a>
+    </div>
+  </div>
+
+  <!-- Contact Administration Modal Popup -->
+  <div id="adminModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3>Forgot Password?</h3>
+      <p>To reset your password, please contact the <strong>School Administration</strong> office for assistance.</p>
+      <button class="modal-close-btn" onclick="closeModal()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    function switchRole(role, event) {
+      // Toggle Tab Buttons
+      const tabs = document.querySelectorAll('.role-tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      // Toggle Forms
+      const forms = document.querySelectorAll('.form-section');
+      forms.forEach(form => form.classList.remove('active'));
+
+      if (role === 'student') {
+        event.currentTarget.classList.add('active');
+        document.getElementById('student-form').classList.add('active');
+      } else if (role === 'faculty') {
+        event.currentTarget.classList.add('active');
+        document.getElementById('faculty-form').classList.add('active');
+      }
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      alert('Login functionality connected successfully!');
+    }
+
+    function showAdminModal(event) {
+      event.preventDefault();
+      document.getElementById('adminModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('adminModal').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

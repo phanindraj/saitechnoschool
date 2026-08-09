@@ -732,15 +732,96 @@ footer {
   gap: 1.5rem;
 }
 
-.footer-brand {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  text-align: left;
-}
+.school-footer {
+      background-color: #051336; /* Deep navy blue matching your theme */
+      border-top: 4px solid #ffcc00; /* Gold top accent border */
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 25px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
 
-.footer-logo {
-  height: 48px;
+    /* Left Section: Logo & Titles */
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .footer-brand img {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      border: 2px solid #ffcc00;
+      object-fit: cover;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+    }
+
+    .footer-brand-text h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .footer-brand-text p {
+      margin: 3px 0 0 0;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      font-style: italic;
+    }
+
+    /* Center Section: Copyright */
+    .footer-copy {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      text-align: center;
+      margin: 0;
+    }
+
+    /* Right Section: Developer Credits */
+    .footer-credits {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-credits span {
+      color: #ffcc00;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .footer-credits span:hover {
+      text-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+      cursor: pointer;
+    }
+
+    /* Responsive Design for Mobile Screens */
+    @media (max-width: 768px) {
+      .school-footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
+      .footer-brand {
+        flex-direction: column;
+      }
+    }
+
+
+
+.footer-gif-logo {
+  height: 90px;
   background: #ffffff;
   padding: 4px;
   border-radius: 50%;
@@ -845,3 +926,4 @@ footer {
   transform: none;
   opacity: 0.7;
 }
+

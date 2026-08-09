@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - Sai Techno School</title>
+
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg-slate: #f8fafc;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-slate);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .login-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      border: 1px solid #e2e8f0;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-header img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 0.75rem;
+    }
+
+    .login-header h2 {
+      margin: 0;
+      color: var(--text-dark);
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .login-header p {
+      margin: 0.25rem 0 0;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .alert-box {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .alert-box.error {
+      display: flex;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .alert-box.success {
+      display: flex;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper i.input-icon {
+      position: absolute;
+      left: 12px;
+      color: #94a3b8;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-password:hover {
+      color: var(--text-dark);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+      margin-top: 1.5rem;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .submit-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .otp-info {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .login-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .spin {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="school-name">Sai Techno School</span>
+        <span class="school-tagline">Excellence in Education</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="students.html">Students Directory</a></li>
+    </ul>
+  </nav>
+
+  <!-- Login Main Container -->
+  <main class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="images/logo.jpeg" alt="School Logo" />
+        <h2>Admin Portal</h2>
+        <p id="subTitle">Sign in to manage student records</p>
+      </div>
+
+      <!-- Alert Notification Message -->
+      <div id="alertBox" class="alert-box">
+        <i data-lucide="alert-circle" size="18"></i>
+        <span id="alertMsg">Invalid credentials</span>
+      </div>
+
+      <!-- STEP 1 FORM: Credentials -->
+      <form id="credentialsForm" onsubmit="handleSendOtp(event)">
+        <div class="form-group">
+          <label for="username">Admin Username</label>
+          <div class="input-wrapper">
+            <i data-lucide="user" class="input-icon" size="18"></i>
+            <input 
+              type="text" 
+              id="username" 
+              placeholder="e.g. ADMIN" 
+              required 
+              autocomplete="username" 
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <i data-lucide="lock" class="input-icon" size="18"></i>
+            <input 
+              type="password" 
+              id="password" 
+              placeholder="••••••••" 
+              required 
+              autocomplete="current-password" 
+            />
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" title="Toggle Password">
+              <i data-lucide="eye" id="passwordIcon" size="18"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="sendOtpBtn" class="submit-btn">
+          <i data-lucide="message-square" size="18"></i> SEND WHATSAPP OTP
+        </button>
+      </form>
+
+      <!-- STEP 2 FORM: OTP Verification (Hidden by Default) -->
+      <form id="otpForm" style="display: none;" onsubmit="handleVerifyOtp(event)">
+        <div class="otp-info">
+          <i data-lucide="smartphone" size="18"></i>
+          <span>OTP sent via Meta WhatsApp API to <strong>+91 9030550770</strong></span>
+        </div>
+
+        <div class="form-group">
+          <label for="otpInput">Enter 6-Digit WhatsApp OTP</label>
+          <div class="input-wrapper">
+            <i data-lucide="key-round" class="input-icon" size="18"></i>
+            <input 
+              type="text" 
+              id="otpInput" 
+              placeholder="e.g. 123456" 
+              maxlength="6"
+              required 
+              autocomplete="one-time-code" 
+            />
+          </div>
+        </div>
+
+        <button type="submit" id="verifyOtpBtn" class="submit-btn">
+          <i data-lucide="check-circle" size="18"></i> VERIFY & LOGIN
+        </button>
+
+        <button type="button" style="background: transparent; color: #64748b; border: none; margin-top: 1rem; width: 100%; cursor: pointer; text-decoration: underline; font-weight: 600;" onclick="resetToCredentials()">
+          Back to Credentials
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>Return to <a href="index.html">Home Page</a></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <p class="copyright">&copy; 2026 Sai Techno School. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Script Block -->
+  <script>
+    // Static WhatsApp Number for Admin
+    const STATIC_ADMIN_WHATSAPP = '919030550770';
+
+    // API Config
+    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000' 
+      : 'https://saitechnoschool.onrender.com';
+
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('password');
+      const passIcon = document.getElementById('passwordIcon');
+
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        passIcon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        passInput.type = 'password';
+        passIcon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
+
+    function showAlert(msg, type = 'error') {
+      const alertBox = document.getElementById('alertBox');
+      const alertMsg = document.getElementById('alertMsg');
+      alertBox.className = `alert-box ${type}`;
+      alertMsg.textContent = msg;
+      alertBox.style.display = 'flex';
+    }
+
+    function hideAlert() {
+      document.getElementById('alertBox').style.display = 'none';
+    }
+
+    // Step 1: Send WhatsApp OTP via Meta Graph API Backend
+    async function handleSendOtp(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const sendOtpBtn = document.getElementById('sendOtpBtn');
+
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.innerHTML = `<i data-lucide="loader" class="spin" size="18"></i> SENDING VIA META...`;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      try {
+        // Validate basic admin credentials locally or via backend before requesting OTP
+        if (username.toUpperCase() !== 'ADMIN' || password !== 'admin123') {
+          throw new Error('INVALID USERNAME OR PASSWORD.');
+        }
+
+        // Call Meta Graph API backend route
+        const response = await fetch(`${API_BASE_URL}/api/admin/send-whatsapp-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: STATIC_ADMIN_WHATSAPP })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          showAlert('WhatsApp OTP sent via Meta Graph API!', 'success');
+          showOtpStep();
+        } else {
+          throw new Error(data.message || 'Failed to dispatch Meta WhatsApp message.');
+        }
+
+      } catch (err) {
+        console.error('Meta API Request Error:', err);
+        showAlert(err.message || 'Error connecting to Meta Graph API backend.');
+      } finally {
+        sendOtpBtn.disabled = false;
+        sendOtpBtn.innerHTML = `<i data-lucide="message-square" size="18"></i> SEND WHATSAPP OTP`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    }
+
+    function showOtpStep() {
+      document.getElementById('credentialsForm').style.display = 'none';
+      document.getElementById('otpForm').style.display = 'block';
+      document.getElementById('subTitle').textContent = 'Enter WhatsApp OTP to verify identity';
+    }
+
+    function resetToCredentials() {
+      document.getElementById('otpForm').style.display = 'none';
+      document.getElementById('credentialsForm').style.display = 'block';
+      document.getElementById('subTitle').textContent = 'Sign in to manage student records';
+      hideAlert();
+    }
+
+    // Step 2: Verify OTP with Meta Graph API Backend
+    async function handleVerifyOtp(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const userOtp = document.getElementById('otpInput').value.trim();
+      const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+
+      verifyOtpBtn.disabled = true;
+      verifyOtpBtn.innerHTML = `<i data-lucide="loader" class="spin" size="18"></i> VERIFYING...`;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/admin/verify-whatsapp-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone: STATIC_ADMIN_WHATSAPP,
+            otp: userOtp
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success && data.token) {
+          localStorage.setItem('adminToken', data.token);
+          showAlert('OTP VERIFIED SUCCESSFULLY! REDIRECTING...', 'success');
+
+          setTimeout(() => {
+            window.location.href = 'add-student.html';
+          }, 1200);
+        } else {
+          throw new Error(data.message || 'INVALID OTP CODE. PLEASE TRY AGAIN.');
+        }
+      } catch (err) {
+        showAlert(err.message);
+      } finally {
+        verifyOtpBtn.disabled = false;
+        verifyOtpBtn.innerHTML = `<i data-lucide="check-circle" size="18"></i> VERIFY & LOGIN`;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    }
+  </script>
+</body>
+</html>
