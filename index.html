@@ -9,74 +9,104 @@
   <!-- Google Fonts & Lucide Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .ai-effect-container {
+      position: relative;
+      display: inline-block;
+      padding: 6px;
+      border-radius: 50%;
+      background: #ffcc00;
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+      animation: pulseOnly 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseOnly {
+      0% {
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(255, 204, 0, 0.9), 0 0 10px rgba(30, 58, 138, 0.4);
+      }
+      100% {
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+      }
+    }
+
+    .ai-effect-container img {
+      display: block;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .ai-effect-container:hover img {
+      transform: scale(1.08) rotate(3deg);
+    }
+    
+    /* Fullscreen Pop-up Splash Overlay */
+    .splash-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+    }
+
+    .splash-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Logo Zoom-Out Animation (Increased duration to 3.5s) */
+    .splash-logo {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 30px rgba(255, 204, 0, 0.6);
+      border: 4px solid #ffcc00;
+      animation: zoomOutToLogo 3.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+    }
+
+    @keyframes zoomOutToLogo {
+      0% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+      25% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      75% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.2);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
-<!--
-<style>
-  .ai-effect-container {
-    position: relative;
-    display: inline-block;
-    padding: 4px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #4285F4, #9333ea, #ec4899, #22c55e);
-    animation: aiShimmer 3s linear infinite;
-  }
 
-  @keyframes aiShimmer {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
-  }
+<body>
 
-  .ai-effect-container img {
-    display: block;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-</style>
--->
-<style>
-  .ai-effect-container {
-    position: relative;
-    display: inline-block;
-    padding: 6px;
-    border-radius: 50%;
-    background: #ffcc00;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
-    animation: pulseOnly 3s ease-in-out infinite;
-  }
-
-  @keyframes pulseOnly {
-    0% {
-      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-    }
-    50% {
-      box-shadow: 0 0 25px rgba(255, 204, 0, 0.9), 0 0 10px rgba(30, 58, 138, 0.4);
-    }
-    100% {
-      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-    }
-  }
-
-  .ai-effect-container img {
-    display: block;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    /* Smooth transition for the book open/close effect */
-    transition: transform 0.6s ease-in-out;
-  }
-
-  /* Hover effect to make the book look like it opens up / scales dynamically */
-  .ai-effect-container:hover img {
-    transform: scale(1.08) rotate(3deg);
-  }
-</style>
-
-
-
-
+  <!-- Splash Screen Pop-up (Shows only once per browser session) -->
+  <div id="splashScreen" class="splash-overlay">
+    <img src="images/sts.gif" alt="Sai Techno School Logo" class="splash-logo">
+  </div>
 
   <!-- Top Notification Bar -->
   <div class="top-bar">
@@ -92,10 +122,9 @@
   <!-- Unified Main Navigation -->
   <nav class="navbar">
     <a href="index.html" class="logo-container">
-     <!-- <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" /> -->
-	  <div class="ai-effect-container">
-		<img src="images/sts.gif" alt="AI Styled Logo" />
-	</div>
+      <div class="ai-effect-container">
+        <img src="images/sts.gif" alt="AI Styled Logo" />
+      </div>
       <div class="brand-text">
         <span class="school-name">SAI TECHNO SCHOOL</span>
         <span class="school-tagline">INSPIRING THE CURIOUS</span>
@@ -108,7 +137,7 @@
       <li><a href="pages/users/faculty.html">Faculty Details</a></li>
       <li><a href="pages/users/students.html">Student Details</a></li>
       <li><a href="pages/users/feedback.html">Feedback</a></li>
-	  <li><a href="login.html">Login</a></li>
+      <li><a href="login.html">Login</a></li>
       <li><a href="#contact" class="btn-apply">Apply Now</a></li>
     </ul>
 
@@ -126,7 +155,7 @@
       <p>Combining modern techno-learning methodologies with core values to nurture intellect, creativity, and character.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn-primary">Admissions 2026-27 <i data-lucide="arrow-right"></i></a>
-        <a href="activities.html" class="btn-secondary"><i data-lucide="bot"></i> Explore Activities</a>
+        <a href="pages/users/activities.html" class="btn-secondary"><i data-lucide="bot"></i> Explore Activities</a>
       </div>
     </div>
   </section>
@@ -143,28 +172,28 @@
         <div class="card-icon"><i data-lucide="trophy"></i></div>
         <h3>Activities & Programs</h3>
         <p>Explore games, athletics, robotics labs, coding bootcamps, and performing arts activities.</p>
-        <a href="activities.html" class="card-link">View Activities <i data-lucide="arrow-right"></i></a>
+        <a href="pages/users/activities.html" class="card-link">View Activities <i data-lucide="arrow-right"></i></a>
       </div>
 
       <div class="about-card highlight-yellow">
         <div class="card-icon"><i data-lucide="users"></i></div>
         <h3>Staff Directory</h3>
         <p>Meet our distinguished faculty, subject experts, and school administrative team.</p>
-        <a href="staff.html" class="card-link">View Staff Details <i data-lucide="arrow-right"></i></a>
+        <a href="pages/users/faculty.html" class="card-link">View Staff Details <i data-lucide="arrow-right"></i></a>
       </div>
 
       <div class="about-card highlight-red">
         <div class="card-icon"><i data-lucide="graduation-cap"></i></div>
         <h3>Student Portal</h3>
         <p>Access student directory listings, academic performance grades, and enrollment records.</p>
-        <a href="students.html" class="card-link">View Student Details <i data-lucide="arrow-right"></i></a>
+        <a href="pages/users/students.html" class="card-link">View Student Details <i data-lucide="arrow-right"></i></a>
       </div>
 
       <div class="about-card highlight-blue">
         <div class="card-icon"><i data-lucide="message-square"></i></div>
         <h3>Parent Feedback</h3>
-        <p>Share suggestions, suggestions, and feedback directly with school administration.</p>
-        <a href="feedback.html" class="card-link">Submit Feedback <i data-lucide="arrow-right"></i></a>
+        <p>Share suggestions, comments, and feedback directly with school administration.</p>
+        <a href="pages/users/feedback.html" class="card-link">Submit Feedback <i data-lucide="arrow-right"></i></a>
       </div>
     </div>
   </section>
@@ -211,7 +240,7 @@
         <h2>Get in Touch with Us</h2>
         <p>Join the Sai Techno School family today. Fill out the form or reach us via phone or email.</p>
         <ul class="contact-list">
-          <li><i data-lucide="map-pin"></i> Durga Nagar Village,Sangareddy,Kistareddypeta,Hyderabad-502319,Telangana India</li>
+          <li><i data-lucide="map-pin"></i> Durga Nagar Village, Sangareddy, Kistareddypeta, Hyderabad-502319, Telangana India</li>
           <li><i data-lucide="mail"></i> admissions@saitechnoschool.co.in</li>
           <li><i data-lucide="phone"></i> +91 9912299981 / +91 9704862382</li>
         </ul>
@@ -237,20 +266,17 @@
   </section>
 
   <!-- Footer -->
-   <footer class="school-footer">
-    <!-- Brand / Logo Section -->
+  <footer class="school-footer">
     <div class="footer-brand">
-     <img src="images/sts.gif" alt="Sai Techno School" class="footer-logo"  />
+      <img src="images/sts.gif" alt="Sai Techno School" class="footer-logo" />
       <div class="footer-brand-text">
         <h3>SAI TECHNO SCHOOL</h3>
         <p>Inspiring The Curious</p>
       </div>
     </div>
 
-    <!-- Copyright Section -->
     <p class="footer-copy">&copy; 2026 Sai Techno School. All Rights Reserved.</p>
 
-    <!-- Developer Credit Section -->
     <div class="footer-credits">
       Developed by <span>PHANINDRA JAGANNADULA</span>
     </div>
@@ -258,6 +284,23 @@
 
   <script>
     lucide.createIcons();
+
+    // Splash Screen Execution Control (Extended timing to match the 3.5s CSS animation)
+    window.addEventListener('DOMContentLoaded', () => {
+      const splash = document.getElementById('splashScreen');
+
+      if (sessionStorage.getItem('splashPlayed')) {
+        if (splash) splash.remove();
+      } else {
+        sessionStorage.setItem('splashPlayed', 'true');
+        setTimeout(() => {
+          if (splash) {
+            splash.classList.add('hidden');
+            setTimeout(() => splash.remove(), 800);
+          }
+        }, 3600);
+      }
+    });
 
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
