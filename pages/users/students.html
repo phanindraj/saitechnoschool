@@ -264,10 +264,10 @@
                 <tr>
                   <th>ROLL NO</th>
                   <th>FULL NAME</th>
-                  <th>DOB</th>
+                  <!-- <th>DOB</th> -->
                   <th>CLASS & SEC</th>
                   <th>GUARDIAN</th>
-                  <th>CONTACT</th>
+                  <!-- <th>CONTACT</th> -->
                   <th>GRADE</th>
                 </tr>
               </thead>
@@ -278,20 +278,20 @@
             // Display every cell value in UPPERCASE
             const rollNo = (s.rollNo || '').toUpperCase();
             const name = (s.name || '').toUpperCase();
-            const dob = (s.dob || '').toUpperCase();
+            // const dob = (s.dob || '').toUpperCase();
             const classSec = (s.classSec || '').toUpperCase();
             const guardian = (s.guardian || '').toUpperCase();
-            const contact = (s.contact || '').toUpperCase();
+            // const contact = (s.contact || '').toUpperCase();
             const grade = (s.grade || '').toUpperCase();
 
             tableHtml += `
               <tr>
                 <td><strong>${rollNo}</strong></td>
                 <td>${name}</td>
-                <td>${dob}</td>
+                <!-- <td>${s.dob || ''}</td> -->
                 <td>${classSec}</td>
                 <td>${guardian}</td>
-                <td>${contact}</td>
+                <!-- <td>${s.contact || ''}</td> -->
                 <td>${grade}</td>
               </tr>
             `;

@@ -3,13 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Staff Directory - Sai Techno School</title>
+  <title>Faculty Directory - Sai Techno School</title>
   <link rel="icon" type="image/jpeg" href="../../images/sts.gif" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/style.css" />
   
   <style>
+    .portal-layout {
+      display: flex;
+      max-width: 1200px;
+      margin: 40px auto;
+      gap: 30px;
+      padding: 0 20px;
+      align-items: flex-start; /* FIX: Prevents sidebar from stretching full height */
+    }
+
+    .portal-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      padding: 24px;
+      height: fit-content;
+      border: 1px solid #e2e8f0;
+    }
+
+    .portal-sidebar h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--brand-blue, #002b9a);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #475569;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .sidebar-link:hover {
+      background-color: #f1f5f9;
+      color: var(--brand-blue, #002b9a);
+    }
+
+    .sidebar-link.active {
+      background-color: var(--brand-blue, #002b9a) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(0, 43, 154, 0.2);
+    }
+
+    .portal-main-content {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
     .teacher-photo-cell {
       width: 44px;
       height: 44px;
@@ -17,12 +84,22 @@
       object-fit: cover;
       border: 2px solid var(--brand-blue, #002b9a);
     }
+
+    @media (max-width: 900px) {
+      .portal-layout {
+        flex-direction: column;
+      }
+      .portal-sidebar {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
 
- <div class="top-bar">
-   <div class="top-bar-content">
+  <!-- Top Notification Bar -->
+  <div class="top-bar">
+    <div class="top-bar-content">
       <span><i data-lucide="sparkles"></i> Admissions Open for Academic Session 2026-2027</span>
       <div class="top-contact">
         <span><i data-lucide="phone"></i> +91 9704862382</span>
@@ -31,8 +108,9 @@
     </div>
   </div>
 
+  <!-- Main Navigation Bar -->
   <nav class="navbar">
-    <a href="index.html" class="logo-container">
+    <a href="../../index.html" class="logo-container">
       <img src="../../images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
       <div class="brand-text">
         <span class="school-name">Sai Techno School</span>
@@ -42,10 +120,8 @@
     
     <ul class="nav-links" id="navLinks">
       <li><a href="../../index.html">Home</a></li>       
-      <li><a href="staff.html">Faculty Details</a></li>
-	  <li><a href="studentsdetails.html">Student Details</a></li>
-	  <li><a href="add-teacher.html">Add Faculty Details</a></li>
-      <li><a href="add-student.html">Add Student Details</a></li>    
+      <li><a href="staff.html" class="active">Faculty</a></li>
+      <li><a href="studentsdetails.html">Students</a></li>   
     </ul>
 
     <button class="mobile-toggle" id="mobileToggle">
@@ -53,51 +129,70 @@
     </button>
   </nav>
 
+  <!-- Page Header -->
   <header class="directory-hero">
-    <h1>Faculty & Administration Staff</h1>
-    <p>Our experienced educators dedicated to student growth and academic success.</p>
+    <h1>Faculty Directory</h1>
+    <p>View and manage all registered faculty records</p>
   </header>
 
-  <section class="directory-section alt-bg">
-    <div style="max-width: 1100px; margin: 0 auto;">
-      
-      <div class="table-container">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Photo</th>
-              <th>Staff ID</th>
-              <th>Name</th>
-              <th>Department</th>
-              <th>Designation</th>
-              <th>Qualification</th>
-              <th>Contact</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody id="staffTableBody">
-            <tr>
-              <td colspan="8" style="text-align: center; padding: 20px;">
-                Fetching teachers from MongoDB database...
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="margin-top: 24px; text-align: center;">
-        <a href="add-teacher.html" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px;">
-          <i data-lucide="user-plus" size="18"></i> Add New Teacher
+  <!-- Portal Layout with Left Sidebar Options -->
+  
+    <div class="portal-layout">
+    <!-- Left Panel Options -->
+    <aside class="portal-sidebar">
+      <h3><i data-lucide="folder-kanban" size="20"></i> Faculty Options</h3>
+      <div class="sidebar-menu">
+        <a href="staff.html" class="sidebar-link active">
+          <i data-lucide="users" size="18"></i> View Faculty Details
+        </a>
+        <a href="add-teacher.html" class="sidebar-link">
+          <i data-lucide="user-plus" size="18"></i> Add Faculty Details
         </a>
       </div>
+    </aside>
 
-    </div>
-  </section>
+    <!-- Main Content Form Section -->
+    <main class="portal-main-content">
+      <div class="card highlight-blue" style="margin: 0;">
+        <div class="card-header" style="text-align: center; margin-bottom: 2rem;">
+          <h3>Faculty & Administration Staff</h3>
+        </div>
+        <div id="alertBox" class="alert"></div>
 
+        <!-- FACULTY VIEW SECTION -->
+        <div id="facultyView" class="directory-view active">
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Photo</th>
+                  <th>Staff ID</th>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Designation</th>
+                  <th>Qualification</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody id="staffTableBody">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 25px;">
+                    Fetching teachers from database...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    
+  </div>
+</main>
   <footer class="school-footer">
     <!-- Brand / Logo Section -->
     <div class="footer-brand">
-     <img src="../../images/sts.gif" alt="Sai Techno School" class="footer-logo"  />
+     <img src="../../images/sts.gif" alt="Sai Techno School" class="footer-logo" />
       <div class="footer-brand-text">
         <h3>SAI TECHNO SCHOOL</h3>
         <p>Inspiring The Curious</p>
@@ -125,27 +220,27 @@
       : 'https://saitechnoschool.onrender.com';
 
     function getInitials(name) {
-      if (!name) return 'ST';
+      if (!name) return 'STS';
       const parts = name.trim().split(' ');
       return parts.length >= 2 
         ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
         : name.substring(0, 2).toUpperCase();
     }
 
+    // Load Teachers Data
     async function loadTeachersFromMongoDB() {
       const tbody = document.getElementById('staffTableBody');
-
       try {
         const response = await fetch(`${API_BASE_URL}/api/teachers`);
-        if (!response.ok) throw new Error('Failed to load MongoDB records.');
+        if (!response.ok) throw new Error('Failed to load teacher records.');
 
         const teachers = await response.json();
 
         if (teachers.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="8" style="text-align: center; padding: 20px;">
-                No staff records found in MongoDB. Click "Add New Teacher" above to register staff.
+              <td colspan="8" style="text-align: center; padding: 25px;">
+                No staff records found in database. Click "Add Faculty Details" to register.
               </td>
             </tr>
           `;
@@ -153,9 +248,6 @@
         }
 
         tbody.innerHTML = teachers.map(teacher => {
-          // Cloudinary stores the complete secure URL directly in teacher.photoPath.
-          // We check if it starts with http/https to render directly from the cloud, 
-          // or fallback if it's empty.
           const photoTd = teacher.photoPath 
             ? `<img src="${teacher.photoPath}" alt="${teacher.name}" class="teacher-photo-cell" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar blue\'>${getInitials(teacher.name)}</div>';" />`
             : `<div class="avatar blue">${getInitials(teacher.name)}</div>`;
@@ -181,21 +273,21 @@
           `;
         }).join('');
 
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-
       } catch (err) {
-        console.error('MongoDB load error:', err);
+        console.error('Faculty load error:', err);
         tbody.innerHTML = `
           <tr>
-            <td colspan="8" style="text-align: center; padding: 20px; color: var(--brand-red, #e51c23);">
-              Unable to fetch teacher records from MongoDB server.
+            <td colspan="8" style="text-align: center; padding: 25px; color: var(--brand-red, #e51c23);">
+              Unable to fetch teacher records from server.
             </td>
           </tr>
         `;
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadTeachersFromMongoDB);
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTeachersFromMongoDB();
+    });
   </script>
 </body>
 </html>

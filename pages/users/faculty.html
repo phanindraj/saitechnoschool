@@ -73,8 +73,8 @@
               <th>Department</th>
               <th>Designation</th>
               <th>Qualification</th>
-              <th>Contact</th>
-              <th>Email</th>
+            <!--   <th>Contact</th>-->
+            <!--   <th>Email</th>-->
             </tr>
           </thead>
           <tbody id="staffTableBody">
@@ -139,7 +139,7 @@
 
       try {
         const response = await fetch(`${API_BASE_URL}/api/teachers`);
-        if (!response.ok) throw new Error('Failed to load MongoDB records.');
+        if (!response.ok) throw new Error('Failed to load STS DB records.');
 
         const teachers = await response.json();
 
@@ -147,7 +147,7 @@
           tbody.innerHTML = `
             <tr>
               <td colspan="8" style="text-align: center; padding: 20px;">
-                No staff records found in MongoDB. Click "Add New Teacher" above to register staff.
+                No staff records found in STS DB. Click "Add New Teacher" above to register staff.
               </td>
             </tr>
           `;
@@ -174,8 +174,8 @@
               <td>${teacher.department || 'N/A'}</td>
               <td>${teacher.designation || 'N/A'}</td>
               <td>${teacher.qualification || 'N/A'}</td>
-              <td>${teacher.contact || 'N/A'}</td>
-              <td>${teacher.email || 'N/A'}</td>
+            <!--   <td>${teacher.contact || 'N/A'}</td>
+              <td>${teacher.email || 'N/A'}</td> -->
             </tr>
           `;
         }).join('');
@@ -183,11 +183,11 @@
         if (typeof lucide !== 'undefined') lucide.createIcons();
 
       } catch (err) {
-        console.error('MongoDB load error:', err);
+        console.error('STS Data load error:', err);
         tbody.innerHTML = `
           <tr>
             <td colspan="8" style="text-align: center; padding: 20px; color: var(--brand-red, #e51c23);">
-              Unable to fetch teacher records from MongoDB server.
+              Unable to fetch teacher records from STS server.
             </td>
           </tr>
         `;
