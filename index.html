@@ -11,6 +11,17 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
+    /* Global Box-Sizing Fix to Prevent Overflow */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
     .ai-effect-container {
       position: relative;
       display: inline-block;
@@ -69,7 +80,7 @@
       pointer-events: none;
     }
 
-    /* Logo Zoom-Out Animation (Increased duration to 3.5s) */
+    /* Logo Zoom-Out Animation */
     .splash-logo {
       width: 280px;
       height: 280px;
@@ -99,9 +110,11 @@
       }
     }
 
-    /* FIX: Responsive Contact/Admissions Section for Mobile Layouts */
+    /* Fully Responsive Contact Section */
     .contact {
       padding: 4rem 1.5rem;
+      width: 100%;
+      overflow: hidden;
     }
 
     .contact-container {
@@ -112,12 +125,12 @@
       max-width: 1200px;
       margin: 0 auto;
       align-items: flex-start;
+      width: 100%;
     }
 
     .contact-info, .contact-form {
       flex: 1;
       min-width: 280px;
-      box-sizing: border-box;
     }
 
     .contact-list {
@@ -140,6 +153,7 @@
       border-radius: 16px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       border: 1px solid #e2e8f0;
+      width: 100%;
     }
 
     .contact-form .input-group {
@@ -154,7 +168,6 @@
       border-radius: 8px;
       font-family: inherit;
       font-size: 0.95rem;
-      box-sizing: border-box;
     }
 
     .submit-btn {
@@ -177,11 +190,21 @@
       background-color: #001f70;
     }
 
+    /* Mobile Screen Adjustments */
     @media (max-width: 768px) {
+      .contact {
+        padding: 2rem 1rem;
+      }
       .contact-container {
         flex-direction: column;
         gap: 2rem;
-        padding: 0 10px;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+      }
+      .contact-info, .contact-form {
+        width: 100%;
+        padding: 0;
       }
       .contact-form {
         padding: 1.5rem 1rem;
@@ -192,7 +215,7 @@
 
 <body>
 
-  <!-- Splash Screen Pop-up (Shows only once per browser session) -->
+  <!-- Splash Screen Pop-up -->
   <div id="splashScreen" class="splash-overlay">
     <img src="images/sts.gif" alt="Sai Techno School Logo" class="splash-logo">
   </div>
@@ -249,7 +272,7 @@
     </div>
   </section>
 
-  <!-- Navigation Hub Section (Quick Access to All Pages) -->
+  <!-- Navigation Hub Section -->
   <section class="about" style="padding-top: 3rem;">
     <div class="section-header">
       <span class="section-tag">School Portal Hub</span>
@@ -374,7 +397,7 @@
   <script>
     lucide.createIcons();
 
-    // Splash Screen Execution Control (Extended timing to match the 3.5s CSS animation)
+    // Splash Screen Execution Control
     window.addEventListener('DOMContentLoaded', () => {
       const splash = document.getElementById('splashScreen');
 
