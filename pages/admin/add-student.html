@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Student - Sai Techno School</title>
-  
+  <link rel="icon" type="image/jpeg" href="../../images/sts.gif" />
   <!-- Google Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="../../css/style.css" />
   <style>
     /* Table layout styling to keep every label and input completely on one single line */
     .form-grid {
@@ -65,10 +65,10 @@
   <!-- Top Notification Bar -->
   <div class="top-bar">
     <div class="top-bar-content">
-      <span><i data-lucide="map-pin" size="14"></i> Sai Techno School Campus, Main Road</span>
+      <span><i data-lucide="sparkles"></i> Admissions Open for Academic Session 2026-2027</span>
       <div class="top-contact">
-        <span><i data-lucide="phone" size="14"></i> +91 9030550770</span>
-        <span><i data-lucide="mail" size="14"></i> info@saitechnoschool.com</span>
+        <span><i data-lucide="phone"></i> +91 9704862382</span>
+        <span><i data-lucide="mail"></i> info@saitechnoschool.co.in</span>
       </div>
     </div>
   </div>
@@ -76,25 +76,25 @@
   <!-- Main Navigation Bar -->
   <nav class="navbar">
     <a href="index.html" class="logo-container">
-      <img src="images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
+      <img src="../../images/logo.jpeg" alt="Sai Techno School Logo" class="brand-logo" />
       <div class="brand-text">
         <span class="school-name">Sai Techno School</span>
         <span class="school-tagline">Excellence in Education</span>
       </div>
     </a>
     
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="students.html">Students Directory</a></li>
-      <li><a href="add-student.html" class="active">Add Student</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+   <ul class="nav-links" id="navLinks">
+      <li><a href="../../index.html">Home</a></li>       
+      <li><a href="staff.html">Faculty Details</a></li>
+	  <li><a href="studentsdetails.html">Student Details</a></li>
+	  <li><a href="add-teacher.html">Add Faculty Details</a></li>
+      <li><a href="add-student.html">Add Student Details</a></li>   
     </ul>
 
     <button class="mobile-toggle" id="mobileToggle">
       <i data-lucide="menu" size="24"></i>
     </button>
   </nav>
-
   <!-- Page Header -->
   <header class="directory-hero">
     <h1>Student Registration Portal</h1>
@@ -198,25 +198,29 @@
           </button>
         </form>
 
-        <a href="students.html" class="nav-link" style="display: block; margin-top: 15px; text-align: center;">&larr; Return to Students Directory</a>
+        
       </div>
 
     </div>
   </section>
 
   <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-brand">
-        <img src="images/logo.png" alt="Logo" class="footer-logo" />
-        <div>
-          <span style="font-weight: 800; font-size: 1.1rem;">Sai Techno School</span>
-          <p class="copyright">&copy; 2026 Sai Techno School. All rights reserved.</p>
-        </div>
+   <footer class="school-footer">
+    <!-- Brand / Logo Section -->
+    <div class="footer-brand">
+     <img src="../../images/sts.gif" alt="Sai Techno School" class="footer-logo"  />
+      <div class="footer-brand-text">
+        <h3>SAI TECHNO SCHOOL</h3>
+        <p>Inspiring The Curious</p>
       </div>
-      <div>
-        <p class="copyright">Empowering young minds for a brighter technological future.</p>
-      </div>
+    </div>
+
+    <!-- Copyright Section -->
+    <p class="footer-copy">&copy; 2026 Sai Techno School. All Rights Reserved.</p>
+
+    <!-- Developer Credit Section -->
+    <div class="footer-credits">
+      Developed by <span>PHANINDRA JAGANNADULA</span>
     </div>
   </footer>
 

@@ -1,22 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 const mongoose = require('mongoose');
 
-// Ensure upload directory exists
-const uploadDir = path.join(__dirname, '../uploads/teachers');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'vrhvhwxa',
+  api_key: process.env.CLOUDINARY_API_KEY || '921568992518143',
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'FrP6jq7gUN_x1AiOFoc4Ded3d7w'
+});
 
-// Multer Storage Configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `teacher_${Date.now()}_${Math.round(Math.random() * 1e9)}${ext}`);
+// Configure Multer Storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'sai-techno-school/teachers',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
   }
 });
 
@@ -39,25 +40,25 @@ const teacherSchema = new mongoose.Schema({
   contact: { type: String, required: true },
   email: { type: String, required: true },
   remarks: { type: String, default: '' },
-  photoPath: { type: String, default: '' }
+  photoPath: { type: String, default: '' } // Stores Cloudinary secure URL
 }, { timestamps: true });
 
 const Teacher = mongoose.models.Teacher || mongoose.model('Teacher', teacherSchema);
 
-// POST Route: Save Teacher to MongoDB
+// POST Route: Save Teacher Record & Upload Image to Cloudinary
 router.post('/add-teacher', upload.single('photo'), async (req, res) => {
   try {
     const teacherData = { ...req.body };
 
     if (req.file) {
-      teacherData.photoPath = `/uploads/teachers/${req.file.filename}`;
+      teacherData.photoPath = req.file.path; // Cloudinary secure URL
     }
 
     const newTeacher = new Teacher(teacherData);
     await newTeacher.save();
 
     res.status(201).json({
-      message: 'Teacher record and photo saved to MongoDB successfully!',
+      message: 'Teacher record and photo saved to Cloudinary & MongoDB successfully!',
       data: newTeacher
     });
   } catch (error) {

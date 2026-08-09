@@ -1,17 +1,19 @@
 {
   "name": "sai-techno-school",
   "version": "1.0.0",
-  "description": "Student Directory Web Application backed by MongoDB Atlas",
+  "description": "Student Directory Web Application",
   "main": "js/server.js",
   "scripts": {
     "start": "node js/server.js"
   },
   "dependencies": {
     "axios": "^1.19.0",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^4.22.2",
     "mongoose": "^8.24.2",
-    "multer": "^1.4.5-lts.2"
+    "multer": "^1.4.5-lts.2",
+    "multer-storage-cloudinary": "^4.0.0"
   }
 }
