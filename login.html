@@ -91,7 +91,7 @@
       flex: 1;
       padding: 10px;
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--gray-text);
       background: transparent;
@@ -266,13 +266,14 @@
     <div class="role-tabs">
       <button class="role-tab active" onclick="switchRole('student', event)">Parent / Student</button>
       <button class="role-tab" onclick="switchRole('faculty', event)">Faculty Login</button>
+      <button class="role-tab" onclick="switchRole('admin', event)">Admin Login</button>
     </div>
 
     <!-- Login Forms Container -->
     <div class="login-form-container">
       
       <!-- Parent / Student Login Form -->
-      <form id="student-form" class="form-section active" onsubmit="handleLogin(event)">
+      <form id="student-form" class="form-section active" onsubmit="handleLogin(event, 'student')">
         <div class="form-group">
           <label for="student-id">Student ID / Registered Email</label>
           <input type="text" id="student-id" placeholder="Enter ID or Email" required>
@@ -285,7 +286,7 @@
       </form>
 
       <!-- Faculty Login Form -->
-      <form id="faculty-form" class="form-section" onsubmit="handleLogin(event)">
+      <form id="faculty-form" class="form-section" onsubmit="handleLogin(event, 'faculty')">
         <div class="form-group">
           <label for="faculty-id">Faculty ID / Email</label>
           <input type="text" id="faculty-id" placeholder="Enter Faculty ID" required>
@@ -295,6 +296,19 @@
           <input type="password" id="faculty-password" placeholder="••••••••" required>
         </div>
         <button type="submit" class="login-btn">Login as Faculty</button>
+      </form>
+
+      <!-- Admin Login Form -->
+      <form id="admin-form" class="form-section" onsubmit="handleLogin(event, 'admin')">
+        <div class="form-group">
+          <label for="admin-id">Admin Username</label>
+          <input type="text" id="admin-id" placeholder="Enter ADMIN" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-password">Password</label>
+          <input type="password" id="admin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="login-btn">Login as Admin</button>
       </form>
 
     </div>
@@ -324,18 +338,33 @@
       const forms = document.querySelectorAll('.form-section');
       forms.forEach(form => form.classList.remove('active'));
 
+      event.currentTarget.classList.add('active');
+
       if (role === 'student') {
-        event.currentTarget.classList.add('active');
         document.getElementById('student-form').classList.add('active');
       } else if (role === 'faculty') {
-        event.currentTarget.classList.add('active');
         document.getElementById('faculty-form').classList.add('active');
+      } else if (role === 'admin') {
+        document.getElementById('admin-form').classList.add('active');
       }
     }
 
-    function handleLogin(event) {
+    function handleLogin(event, type) {
       event.preventDefault();
-      alert('Login functionality connected successfully!');
+
+      if (type === 'admin') {
+        const username = document.getElementById('admin-id').value.trim();
+        const password = document.getElementById('admin-password').value.trim();
+
+        if (username === 'ADMIN' && password === 'admin123') {
+          // Route to admin/staff.html
+          window.location.href = 'pages/admin/staff.html';
+        } else {
+          alert('Invalid Admin credentials! Use ADMIN / admin123');
+        }
+      } else {
+        alert('Login functionality connected successfully!');
+      }
     }
 
     function showAdminModal(event) {
